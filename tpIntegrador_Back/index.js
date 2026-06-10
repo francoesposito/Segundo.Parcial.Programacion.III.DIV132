@@ -14,7 +14,7 @@ const PORT = environments.port;
 //          Middlewares         //
 //////////////////////////////////
 
-app.use(cors);
+app.use(cors());
 
 app.use((req, res, next) => {
 	console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
@@ -55,7 +55,7 @@ app.get("/api/products", async (req, res) => {
 
 app.get("/api/products/:id", async (req, res) => { 
     try{
-        const { id } = req.body;
+        const { id } = req.params;
 
         const sql = "SELECT * FROM products WHERE id = ?"
         
@@ -80,7 +80,7 @@ app.post("/api/products", async (req, res) => {
 
         const sql = "INSERT INTO products (name, image, category, price) VALUES (?, ?, ?, ?)";
 
-        await connection.query(sql, [category, image, name, price]);
+        await connection.query(sql, [name, image, category, price]);
 
         res.status(200).json({
             message: "Producto creado con éxito"
@@ -95,9 +95,11 @@ app.post("/api/products", async (req, res) => {
 
 app.put("/api/products", async (req, res) => {
     try {
-        const { id, na, image, price, category} = req.body;
+        const { id, name, image, price, category} = req.body;
 
         let sql = `UPDATE products SET name = ?, image = ?, price = ?, category = ? WHERE id = ?`;
+
+        await connection.query(sql, [name, image, price, category, id]);
 
         res.status(200).json({
             message: "Producto actualizado correctamente"
@@ -110,7 +112,7 @@ app.put("/api/products", async (req, res) => {
 
 /////////////////////////////////
 // Endpoint DELETE de UN producto
-app.delete("api/products/:id", async (req, res) => {
+app.delete("/api/products/:id", async (req, res) => {
     try {
         let { id } = req.params
 
