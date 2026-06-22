@@ -10,7 +10,7 @@ Este documento es una guía paso a paso y hoja de ruta detallada para el desarro
 
 El proyecto está dividido en dos carpetas principales:
 *   📂 [tpIntegrador_Front](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Front): Aplicación del cliente (Kiosco Autoservicio) usando HTML, CSS y JavaScript del lado del cliente.
-*   📂 [tpIntegrador_Back](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back): Servidor Node.js con Express, ORM (Sequelize), vistas administrativas EJS y la API REST en JSON.
+*   📂 [tpIntegrador_Back](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back): Servidor Node.js con Express, pool de conexiones de MySQL (`mysql2/promise`), vistas administrativas EJS y la API REST en JSON.
 
 ---
 
@@ -30,7 +30,7 @@ El proyecto está dividido en dos carpetas principales:
 
 ```mermaid
 graph TD
-    A[Fase 1: Base de Datos y Sequelize] --> B[Fase 2: API REST con ORM]
+    A[Fase 1: Configuración de Base de Datos y Modelos SQL] --> B[Fase 2: API REST y Controladores]
     B --> C[Fase 3: Backoffice Administrativo EJS]
     C --> D[Fase 4: Frontend del Kiosco Autoservicio]
     D --> E[Fase 5: Requerimientos Extra para Final]
@@ -40,25 +40,27 @@ graph TD
 ---
 
 ### 🗄️ Fase 1: Base de Datos y Configuración Inicial (Backend)
-El primer paso es modelar y preparar la base de datos MySQL usando Sequelize para cumplir con la consigna de **"Utilizar un ORM"**.
+Preparar la base de datos MySQL y estructurar el acceso usando el pool de conexiones de `mysql2/promise`.
 
 1.  **Instalar dependencias necesarias en [tpIntegrador_Back](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back):**
-    *   Instalar Sequelize y el driver de mysql: `npm install sequelize`
+    *   `mysql2` ya está instalado en el proyecto.
     *   Instalar Bcrypt para encriptar contraseñas: `npm install bcrypt`
     *   Instalar Multer para subir imágenes de productos: `npm install multer`
     *   Instalar XLSX o ExcelJS para generar los reportes Excel: `npm install exceljs`
-2.  **Configurar Sequelize en `tpIntegrador_Back/src/api/database`:**
-    *   Reemplazar la conexión de pool cruda de [db.js](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back/src/api/database/db.js) por una instancia de Sequelize.
-3.  **Crear los Modelos de Sequelize:**
-    *   `Product`: `id`, `name`, `image` (ruta de la imagen guardada en servidor), `category`, `price`, `active` (booleano para la baja lógica).
-    *   `User`: `id`, `name`, `email`, `password` (encriptado), `es_admin` (booleano).
-    *   `Sale`: `id`, `customer_name`, `date` (fecha actual), `total_price`.
-    *   `SaleProduct` (Tabla intermedia Muchos a Muchos): `SaleId`, `ProductId`, `quantity` (cantidad del producto comprado).
-    *   `Log` (Para final): `id`, `UserId`, `action` (ej: "Inicio de sesión exitoso"), `date`.
-    *   `Survey` (Para final): `id`, `opinion` (textarea), `email` (email), `newsletter` (checkbox), `rating` (slider de 1 a 10), `image_path` (file), `date`.
-4.  **Sincronizar y Sembrar (Seeds) la Base de Datos:**
-    *   Crear un script para inicializar la DB con algunos productos cargados (al menos 6-8 para probar paginación).
-    *   Crear al menos un usuario administrador de prueba (con contraseña cifrada con `bcrypt`).
+2.  **Configurar el pool de conexiones en `tpIntegrador_Back/src/api/database/db.js`:**
+    *   Asegurar que el pool de conexiones de `mysql2/promise` esté correctamente configurado con las variables de entorno de `.env`. (Ya lo tienen hecho).
+3.  **Crear los archivos de Modelos con Consultas SQL:**
+    En lugar de usar un ORM complejo, crearemos funciones modulares que realicen las consultas SQL puras usando `connection.query()` para separar la lógica de base de datos de los controladores:
+    *   `product.model.js`: Funciones `getAllProducts()`, `getProductById(id)`, `createProduct(data)`, `updateProduct(id, data)`, `deactivateProduct(id)`.
+    *   `user.model.js`: Funciones `getUserByEmail(email)`, `createUser(data)`.
+    *   `sale.model.js`: Funciones `createSale(data)`, `getAllSales()`.
+4.  **Estructura de las Tablas en MySQL:**
+    *   **products:** `id` (INT PK AI), `name` (VARCHAR), `image` (VARCHAR), `category` (VARCHAR), `price` (DECIMAL), `active` (TINYINT/BOOLEAN, por defecto 1).
+    *   **users:** `id` (INT PK AI), `name` (VARCHAR), `email` (VARCHAR UNIQUE), `password` (VARCHAR encriptada), `es_admin` (TINYINT/BOOLEAN).
+    *   **sales:** `id` (INT PK AI), `customer_name` (VARCHAR), `date` (DATETIME), `total_price` (DECIMAL).
+    *   **sales_products** (Intermedia): `id_sale` (INT FK), `id_product` (INT FK), `quantity` (INT).
+    *   **logs** (Para final): `id` (INT PK AI), `id_user` (INT FK), `action` (VARCHAR), `date` (DATETIME).
+    *   **surveys** (Para final): `id` (INT PK AI), `opinion` (TEXT), `email` (VARCHAR), `newsletter` (TINYINT), `rating` (INT), `image_path` (VARCHAR), `date` (DATETIME).
 
 ---
 
@@ -71,17 +73,17 @@ Desarrollar los endpoints en Express que devolverán JSON y serán consumidos po
     *   `src/api/middlewares/`: Validación de datos.
 2.  **Endpoints para Productos (`/api/products`):**
     *   `GET /api/products`: Devuelve productos activos. Debe soportar **paginación** (`?page=1&limit=4`).
-    *   `GET /api/products/:id`: Devuelve un único producto por ID (con datos completos).
-    *   `POST /api/products`: Recibe los datos de un nuevo producto junto con su imagen usando **Multer** y los guarda.
+    *   `GET /api/products/:id`: Devuelve un único producto por ID.
+    *   `POST /api/products`: Recibe los datos de un nuevo producto junto con su imagen usando **Multer** y los inserta en la base de datos.
     *   `PUT /api/products/:id`: Actualiza los datos de un producto (si se sube una nueva imagen, reemplazar la anterior).
-    *   `DELETE /api/products/:id`: Aplica **baja lógica** cambiando la propiedad `active` a `false`.
+    *   `DELETE /api/products/:id`: Aplica **baja lógica** cambiando el campo `active` a `0`.
 3.  **Endpoints para Ventas (`/api/sales`):**
-    *   `POST /api/sales`: Guarda una venta con los productos asociados en la tabla intermedia y calcula el total.
+    *   `POST /api/sales`: Registra una venta en la tabla `sales` y asocia los productos en la tabla intermedia `sales_products` calculando el total.
     *   `GET /api/sales`: Devuelve el listado de ventas realizadas junto con los productos asociados.
 4.  **Endpoints para Usuarios y Autenticación:**
     *   `POST /api/users`: Endpoint privado para crear un usuario administrador (guarda la contraseña con `bcrypt.hash()`).
 5.  **Middlewares de Validación:**
-    *   Crear middlewares que validen que los datos ingresados en `POST` y `PUT` de productos no estén vacíos y tengan tipos de datos correctos antes de llegar al controlador.
+    *   Crear middlewares que validen que los datos ingresados en `POST` y `PUT` de productos no estén vacíos y tengan tipos de datos correctos antes de realizar las consultas SQL.
 
 ---
 
@@ -97,16 +99,15 @@ Esta sección se encarga del renderizado HTML desde el servidor para los adminis
         > **Botón de acceso rápido:** Debe existir un botón autocompletar que llene los campos automáticamente con las credenciales de prueba del administrador para facilitar la corrección de los docentes.
     *   Validar contraseñas comparando con `bcrypt.compare()`.
 3.  **Pantalla de Dashboard / Panel Principal (`/admin/dashboard`):**
-    *   Debe requerir autenticación previa (guardar estado de sesión en una cookie/session).
-    *   Mostrar una tabla con el catálogo completo de productos, separados/filtrados por tipo (o en secciones bien delimitadas).
+    *   Debe requerir autenticación previa (guardar estado de sesión en una cookie o session).
+    *   Mostrar una tabla con el catálogo completo de productos, separados/filtrados por tipo.
     *   Mostrar claramente el estado de cada producto: Activo o Inactivo.
     *   Botones de acción rápidos por cada producto:
         *   **Modificar:** Redirige al formulario de edición.
-        *   **Desactivar (Baja lógica):** Cambia `active` a `false` (mostrar un modal de confirmación antes).
-        *   **Activar (Reactivar):** Cambia `active` a `true` (mostrar un modal de confirmación antes).
+        *   **Desactivar (Baja lógica):** Cambia `active` a `0` (mostrar un modal de confirmación antes).
+        *   **Activar (Reactivar):** Cambia `active` a `1` (mostrar un modal de confirmación antes).
 4.  **Pantalla de Creación y Edición (`/admin/products/new` y `/admin/products/edit/:id`):**
     *   Formulario completo para cargar/editar nombre, precio, categoría y subir el archivo de la imagen.
-    *   *Tip:* Se puede reutilizar la misma plantilla EJS para alta y edición pasando variables de control.
 5.  **Descarga de Ventas en Excel (`/admin/sales/export`):**
     *   Un botón que al presionarlo genere y descargue un archivo `.xlsx` con todas las ventas registradas.
 
@@ -117,7 +118,7 @@ Esta aplicación representa la pantalla táctil de un kiosco de autoservicio. De
 
 1.  **Pantalla de Bienvenida:**
     *   Página de inicio que solicita obligatoriamente el nombre del cliente.
-    *   No permite avanzar a los productos hasta que se haya ingresado y validado el nombre (guardarlo en `sessionStorage` o `localStorage`).
+    *   No permite avanzar a los productos hasta que se haya ingresado y validado el nombre.
 2.  **Pantalla de Catálogo de Productos:**
     *   Muestra los productos activos de forma atractiva.
     *   Permite filtrar o navegar entre las **dos categorías** del negocio.
@@ -132,11 +133,10 @@ Esta aplicación representa la pantalla táctil de un kiosco de autoservicio. De
 4.  **Pantalla de Ticket:**
     *   Una vez guardada la compra, redirige a esta pantalla.
     *   Muestra el ticket de compra formalizado: productos, cantidades, precio individual, subtotal, precio total, nombre del cliente, fecha del día y nombre de la empresa.
-    *   **Descarga en PDF:** Agregar un botón para descargar este ticket en PDF (se puede usar la librería `html2pdf.js` o `jspdf` directamente en el frontend).
+    *   **Descarga en PDF:** Agregar un botón para descargar este ticket en PDF.
     *   **Botón Salir / Reiniciar:** Redirige a la pantalla de bienvenida borrando el carrito y el nombre almacenado.
 5.  **Persistencia del Tema (Claro / Oscuro):**
-    *   Un interruptor de tema claro/oscuro en el header de la aplicación.
-    *   Debe persistir usando `localStorage` para que al recargar la página se mantenga el tema elegido.
+    *   Un interruptor de tema claro/oscuro en el header de la aplicación que se guarda en `localStorage`.
 
 ---
 
@@ -153,10 +153,9 @@ Si van a promocionar directamente o prepararse para la fecha de final, deben imp
         2.  `email`: Correo del cliente.
         3.  `checkbox`: Aceptar newsletter / promociones.
         4.  `slider (range)`: Puntuación del servicio (1 al 10).
-        5.  `file`: Carga de imagen (por ejemplo, foto del ticket o del local).
-    *   Validar datos (mostrar mensajes de error estilizados si falla).
+        5.  `file`: Carga de imagen.
+    *   Validar datos y guardarlos mediante un `POST /api/surveys` (usando Multer para subir el archivo).
     *   Debe permitir omitirse mediante un botón secundario ("Omitir") poco llamativo.
-    *   Al enviar, guarda los datos mediante un `POST /api/surveys` (usando Multer para subir el archivo) y muestra un modal de agradecimiento antes de reiniciar el kiosco.
 
 #### Para el Administrador (Backoffice):
 1.  **Pantalla de Registros / Logs (`/admin/records`):**
@@ -164,16 +163,9 @@ Si van a promocionar directamente o prepararse para la fecha de final, deben imp
     *   Muestra tablas de estadísticas avanzadas:
         *   Top 10 de productos más vendidos.
         *   Top 10 de ventas más caras.
-        *   Otras 2 estadísticas de elección libre (ej: promedio de gasto por cliente, horas pico de ventas, etc.).
+        *   Otras 2 estadísticas de elección libre.
 2.  **Descarga de Encuestas:**
     *   Botón en el panel de administración para exportar todas las encuestas respondidas a un archivo Excel.
-
----
-
-### 🎨 Fase 6: Estilos, Pulido y Validación
-*   **Estilo Visual Premium:** La consigna pide explícitamente tener criterio a la hora de dar estilos. Utilicen colores armónicos, variables CSS, fuentes modernas (ej: Google Fonts) y sombras sutiles.
-*   **Diseño Responsive:** Ambas partes del sistema (autoservicio y backoffice) deben ser fluidas tanto en PC de escritorio como en smartphones.
-*   **Middlewares y Manejo de Errores:** Aseguren que el backend no se caiga ante peticiones incorrectas. Retornen códigos HTTP adecuados (`200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `500 Internal Server Error`).
 
 ---
 
@@ -182,15 +174,14 @@ Si van a promocionar directamente o prepararse para la fecha de final, deben imp
 *   > [!WARNING]
     *   **Revisión de Commits:** Los profesores revisarán los commits para asegurar que ambos trabajaron en los dos proyectos (Frontend y Backend). Distribuyan las tareas de forma equitativa.
 *   **Ramas en Git (Git Branches):** Eviten programar todo en `main`. Creen ramas como `feature/api-rest`, `feature/ejs-backoffice`, `feature/kiosco-front`, y únanlas mediante Pull Requests en GitHub después de probarlas.
-*   **Base de datos local compartida:** Aseguren tener configurado un archivo `.env` en sus computadoras locales para que cada uno pueda conectarse a su respectiva base de datos local sin cambiar el código base.
 
 ---
 
 ## 📋 Lista de Chequeo de Progreso (TODO)
 
-### Backend (Express + Sequelize)
-- [ ] Configurar Sequelize y conexión a MySQL en [db.js](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back/src/api/database/db.js).
-- [ ] Definir modelos (`Product`, `User`, `Sale`, `SaleProduct`, `Log`, `Survey`).
+### Backend (Express + mysql2)
+- [ ] Asegurar conexión a MySQL en [db.js](file:///c:/Users/Usuario/Desktop/Nueva%20carpeta%20(2)/Segundo.Parcial.Programacion.III.DIV132/tpIntegrador_Back/src/api/database/db.js).
+- [ ] Definir consultas SQL y funciones de modelos (`Product`, `User`, `Sale`, `SaleProduct`, `Log`, `Survey`).
 - [ ] Implementar cifrado de contraseñas con `bcrypt`.
 - [ ] Crear endpoints de API para CRUD de productos (con paginación).
 - [ ] Crear endpoint de API para registrar ventas (`POST /api/sales`).
