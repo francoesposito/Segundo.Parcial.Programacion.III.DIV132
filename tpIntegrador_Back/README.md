@@ -49,64 +49,73 @@ La conexión a la base de datos se realiza en `src/api/database/db.js` utilizand
 
 ---
 
-## 🛠️ 4. Capa de Controladores (`*.controller.js`)
+## 🛠️ 4. Capa de Controladores (`product.controller.js`)
 
 El controlador se encarga exclusivamente de interactuar con Express (`req` y `res`). A continuación se explica cada función y cómo leer los parámetros del cliente:
 
-### A. Productos (`product.controller.js`)
-
-#### 1. `getProducts` (GET)
+### 1. `getProducts` (GET)
 * **Petición:** `GET /api/products?page=2&limit=4`
 * **Parámetro utilizado:** `req.query` (parámetros opcionales agregados después del `?`).
-* **Ejemplo query:** `?page=1&limit=4`
-
-#### 2. `getProduct` (GET)
-* **Petición:** `GET /api/products/5`
-* **Parámetro utilizado:** `req.params` (variables integradas en la ruta, ej: `/:id`).
-* **Ejemplo params:** `/api/products/5`
-
-#### 3. `create` (POST)
-* **Petición:** `POST /api/products` (Enviando JSON en el cuerpo del request)
-* **Parámetro utilizado:** `req.body` (cuerpo de la petición).
-* **Ejemplo body:** `{ "name": "Teclado", "price": 4500, "category": "Hardware", "image": "teclado.jpg" }`
-
-#### 4. `update` (PUT)
-* **Petición:** `PUT /api/products/5` (Enviando JSON en el cuerpo)
-* **Parámetro utilizado:** `req.params` (id) y `req.body` (nuevos campos).
-* **Ejemplo params/body:** `/api/products/5` y `{ "name": "Teclado RGB", "price": 5000 }`
-
-#### 5. `deactivate` (DELETE)
-* **Petición:** `DELETE /api/products/5`
-* **Parámetro utilizado:** `req.params` (id).
-* **Ejemplo params:** `/api/products/5`
-
----
-
-### B. Ventas (`sale.controller.js`)
-
-#### 1. `getSales` (GET)
-* **Petición:** `GET /api/sales`
-* **Cómo funciona:** Llama a `getAllSales()` y agrupa las filas repetidas usando un mapa (`salesMap`) de JavaScript para devolver un JSON anidado mucho más limpio.
-* **Ejemplo payload devuelto:**
-  ```json
-  [{
-    "id": 1,
-    "customer_name": "Franco",
-    "total_price": 15000,
-    "products": [{ "id": 2, "name": "Teclado", "price": 7500, "quantity": 2 }]
-  }]
+* **Cómo funciona:**
+  ```javascript
+  const { page, limit } = req.query; // Extrae page y limit
+  if (page && limit) {
+      const offset = (Number(page) - 1) * Number(limit); // Calcula el salto de filas
+      products = await getAllProducts(Number(limit), offset);
+  } else {
+      products = await getAllProducts();
+  }
+  res.status(200).json({ payload: products });
   ```
 
-#### 2. `create` (POST)
-* **Petición:** `POST /api/sales` (Enviando JSON con el cliente y los productos en el body)
-* **Parámetro utilizado:** `req.body`
-* **Ejemplo body:**
-  ```json
-  {
-    "customer_name": "Franco",
-    "total_price": 15000,
-    "products": [{ "id_product": 2, "quantity": 2 }]
+### 2. `getProduct` (GET)
+* **Petición:** `GET /api/products/5`
+* **Parámetro utilizado:** `req.params` (variables integradas en la ruta, ej: `/:id`).
+* **Cómo funciona:**
+  ```javascript
+  const { id } = req.params; // Extrae el id "5"
+  const product = await getProductById(id);
+  if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
   }
+  res.status(200).json({ payload: product });
+  ```
+
+### 3. `create` (POST)
+* **Petición:** `POST /api/products` (Enviando JSON en el cuerpo del request)
+* **Parámetro utilizado:** `req.body` (cuerpo de la petición).
+* **Cómo funciona:**
+  ```javascript
+  const { category, image, name, price } = req.body;
+  const newProductId = await createProduct({ name, image, category, price });
+  res.status(201).json({ message: "Producto creado con éxito", id: newProductId });
+  ```
+
+### 4. `update` (PUT)
+* **Petición:** `PUT /api/products/5` (Enviando JSON en el cuerpo)
+* **Parámetro utilizado:** `req.params` (id) y `req.body` (nuevos campos).
+* **Cómo funciona:**
+  ```javascript
+  const { id } = req.params;
+  const { name, image, price, category } = req.body;
+  const updated = await updateProduct(id, { name, image, price, category });
+  if (!updated) {
+      return res.status(404).json({ message: "Producto no encontrado para actualizar" });
+  }
+  res.status(200).json({ message: "Producto actualizado correctamente" });
+  ```
+
+### 5. `deactivate` (DELETE)
+* **Petición:** `DELETE /api/products/5`
+* **Parámetro utilizado:** `req.params` (id).
+* **Cómo funciona:**
+  ```javascript
+  const { id } = req.params;
+  const deactivated = await deactivateProduct(id);
+  if (!deactivated) {
+      return res.status(404).json({ message: "Producto no encontrado para desactivar" });
+  }
+  res.status(200).json({ message: `Producto con ID ${id} desactivado correctamente` });
   ```
 
 ---
@@ -121,6 +130,5 @@ El controlador se encarga exclusivamente de interactuar con Express (`req` y `re
 * **Códigos de Estado HTTP (Status Codes):**
   * `200 OK`: Petición exitosa.
   * `201 Created`: Recurso creado exitosamente (ej: tras un POST).
-  * `400 Bad Request`: Petición incorrecta o datos incompletos.
   * `404 Not Found`: El recurso solicitado (URL o ID) no existe.
   * `500 Internal Server Error`: Error interno de lógica o base de datos en el servidor.

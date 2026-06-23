@@ -11,6 +11,7 @@ import {
 //       Controllers        //
 //////////////////////////////
 
+// Ej query: ?page=1&limit=4
 export const getProducts = async (req, res) => {
     try {
         const { page, limit } = req.query;
@@ -26,12 +27,11 @@ export const getProducts = async (req, res) => {
         res.status(200).json({ payload: products });
     } catch (error) {
         console.error("Error en getProducts controller: ", error.message);
-        res.status(500).json({ 
-            error: "Error interno del servidor"
-         });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
+// Ej params: /api/products/5
 export const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -44,12 +44,11 @@ export const getProduct = async (req, res) => {
         res.status(200).json({ payload: product });
     } catch (error) {
         console.error("Error en getProduct controller: ", error.message);
-        res.status(500).json({ 
-            error: "Error interno del servidor" 
-        });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
+// Ej body: { "name": "Teclado", "price": 4500, "category": "Hardware", "image": "teclado.jpg" }
 export const create = async (req, res) => {
     try {
         const { category, image, name, price } = req.body;
@@ -61,12 +60,11 @@ export const create = async (req, res) => {
         });
     } catch (error) {
         console.error("Error en create product controller: ", error.message);
-        res.status(500).json({ 
-            error: "Error interno del servidor" 
-        });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
+// Ej params y body: /api/products/5 y { "name": "Teclado RGB", "price": 5000 }
 export const update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -78,37 +76,26 @@ export const update = async (req, res) => {
             return res.status(404).json({ message: "Producto no encontrado para actualizar" });
         }
 
-        res.status(200).json({
-             message: "Producto actualizado correctamente" 
-            });
-
+        res.status(200).json({ message: "Producto actualizado correctamente" });
     } catch (error) {
         console.error("Error en update product controller: ", error.message);
-        res.status(500).json({ 
-            error: "Error interno del servidor"
-         });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };
 
+// Ej params: /api/products/5
 export const deactivate = async (req, res) => {
     try {
         const { id } = req.params;
         const deactivated = await deactivateProduct(id);
 
         if (!deactivated) {
-            return res.status(404).json({
-                 message: "Producto no encontrado para desactivar" 
-                });
+            return res.status(404).json({ message: "Producto no encontrado para desactivar" });
         }
 
-        res.status(200).json({ 
-            message: `Producto con ID ${id} desactivado correctamente` 
-        });
-        
+        res.status(200).json({ message: `Producto con ID ${id} desactivado correctamente` });
     } catch (error) {
         console.error("Error en deactivate product controller: ", error.message);
-        res.status(500).json({ 
-            error: "Error interno del servidor" 
-        });
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 };

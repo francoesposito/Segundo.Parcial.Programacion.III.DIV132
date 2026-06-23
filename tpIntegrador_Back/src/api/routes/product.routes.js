@@ -13,10 +13,10 @@ import {
 
 const router = Router();
 
-router.get("/", getProducts);
-router.get("/:id", getProduct);
-router.post("/", create);
-router.put("/:id", update);
-router.delete("/:id", deactivate);
+router.get("/", getProducts);       // GET /api/products
+router.get("/:id", getProduct);     // GET /api/products/id
+router.post("/", create);           // POST /api/products
+router.put("/:id", update);         // PUT /api/products/id
+router.delete("/:id", deactivate);  // DELETE /api/products/id
 
 export default router;
