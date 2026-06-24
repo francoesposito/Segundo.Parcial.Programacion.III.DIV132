@@ -7,6 +7,8 @@ import environments from "./src/api/config/environments.js";
 import cors from "cors";
 import productRouter from "./src/api/routes/product.routes.js";
 import saleRouter from "./src/api/routes/sale.routes.js";
+import viewRouter from "./src/api/routes/view.routes.js"
+import { __dirname, join } from "./src/utils/index.js";
 
 const app = express();
 const PORT = environments.port;
@@ -24,12 +26,16 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.set("view engine", "ejs")
+app.set("views", join(__dirname, "src/views"))
+
 //////////////////////////////
 //          Routes          //
 //////////////////////////////
 
 app.use("/api/products", productRouter);
 app.use("/api/sales", saleRouter)
+app.use("/views/dashboard", viewRouter)
 
 app.get("/", (req, res) => {
     res.send("Servidor Autoservicio corriendo correctamente.");
