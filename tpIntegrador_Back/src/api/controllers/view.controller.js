@@ -23,3 +23,36 @@ export const indexView = async (req, res) => {
 
 }
 
+export const getProductView = (req, res) => {
+
+    res.render("get", {
+        title: "Consultar",
+        about: "Consultar producto por id: "
+    });
+}
+
+
+export const createProductView = (req, res) => {
+    res.render("post", {
+        title: "Crear",
+        about: "Crear producto"
+    });
+}
+
+
+
+export const updateProductView = (req, res) => {
+    res.render("put", {
+        title: "Modificar",
+        about: "Consultar producto por id: "
+    });
+}
+
+
+
+export const deleteProductView = (req, res) => {
+    res.render("delete", {
+        title: "Eliminar",
+        about: "Consultar producto por id: "
+    });
+}

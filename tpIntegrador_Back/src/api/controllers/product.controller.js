@@ -3,7 +3,7 @@ import {
     getProductById, 
     createProduct, 
     updateProduct, 
-    deactivateProduct,
+    deleteProduct,
     countProducts
 } from "../models/product.model.js";
 
@@ -84,18 +84,18 @@ export const update = async (req, res) => {
 };
 
 // Ej params: /api/products/5
-export const deactivate = async (req, res) => {
+export const del = async (req, res) => {
     try {
         const { id } = req.params;
-        const deactivated = await deactivateProduct(id);
+        const deactivated = await deleteProduct(id);
 
         if (!deactivated) {
-            return res.status(404).json({ message: "Producto no encontrado para desactivar" });
+            return res.status(404).json({ message: "Producto no encontrado para eliminar" });
         }
 
-        res.status(200).json({ message: `Producto con ID ${id} desactivado correctamente` });
+        res.status(200).json({ message: `Producto con ID ${id} eliminado correctamente` });
     } catch (error) {
-        console.error("Error en deactivate product controller: ", error.message);
+        console.error("Error en delete product controller: ", error.message);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 };

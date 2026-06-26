@@ -57,7 +57,7 @@ El controlador se encarga exclusivamente de interactuar con Express (`req` y `re
 * **Petición:** `GET /api/products?page=2&limit=4`
 * **Parámetro utilizado:** `req.query` (parámetros opcionales agregados después del `?`).
 * **Cómo funciona:**
-  ```javascript
+  `javascript
   const { page, limit } = req.query; // Extrae page y limit
   if (page && limit) {
       const offset = (Number(page) - 1) * Number(limit); // Calcula el salto de filas
@@ -66,36 +66,36 @@ El controlador se encarga exclusivamente de interactuar con Express (`req` y `re
       products = await getAllProducts();
   }
   res.status(200).json({ payload: products });
-  ```
+  `
 
 ### 2. `getProduct` (GET)
 * **Petición:** `GET /api/products/5`
 * **Parámetro utilizado:** `req.params` (variables integradas en la ruta, ej: `/:id`).
 * **Cómo funciona:**
-  ```javascript
+  `javascript
   const { id } = req.params; // Extrae el id "5"
   const product = await getProductById(id);
   if (!product) {
       return res.status(404).json({ message: "Producto no encontrado" });
   }
   res.status(200).json({ payload: product });
-  ```
+  `
 
 ### 3. `create` (POST)
 * **Petición:** `POST /api/products` (Enviando JSON en el cuerpo del request)
 * **Parámetro utilizado:** `req.body` (cuerpo de la petición).
 * **Cómo funciona:**
-  ```javascript
+  `javascript
   const { category, image, name, price } = req.body;
   const newProductId = await createProduct({ name, image, category, price });
   res.status(201).json({ message: "Producto creado con éxito", id: newProductId });
-  ```
+  `
 
 ### 4. `update` (PUT)
 * **Petición:** `PUT /api/products/5` (Enviando JSON en el cuerpo)
 * **Parámetro utilizado:** `req.params` (id) y `req.body` (nuevos campos).
 * **Cómo funciona:**
-  ```javascript
+  `javascript
   const { id } = req.params;
   const { name, image, price, category } = req.body;
   const updated = await updateProduct(id, { name, image, price, category });
@@ -103,20 +103,20 @@ El controlador se encarga exclusivamente de interactuar con Express (`req` y `re
       return res.status(404).json({ message: "Producto no encontrado para actualizar" });
   }
   res.status(200).json({ message: "Producto actualizado correctamente" });
-  ```
+  `
 
 ### 5. `deactivate` (DELETE)
 * **Petición:** `DELETE /api/products/5`
 * **Parámetro utilizado:** `req.params` (id).
 * **Cómo funciona:**
-  ```javascript
+  `javascript
   const { id } = req.params;
   const deactivated = await deactivateProduct(id);
   if (!deactivated) {
       return res.status(404).json({ message: "Producto no encontrado para desactivar" });
   }
   res.status(200).json({ message: `Producto con ID ${id} desactivado correctamente` });
-  ```
+  `
 
 ---
 

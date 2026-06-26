@@ -88,26 +88,26 @@ El controlador se encarga exclusivamente de interactuar con Express (`req` y `re
 * **Petición:** `GET /api/sales`
 * **Cómo funciona:** Llama a `getAllSales()` y agrupa las filas repetidas usando un mapa (`salesMap`) de JavaScript para devolver un JSON anidado mucho más limpio.
 * **Ejemplo payload devuelto:**
-  ```json
+  `json
   [{
     "id": 1,
     "customer_name": "Franco",
     "total_price": 15000,
     "products": [{ "id": 2, "name": "Teclado", "price": 7500, "quantity": 2 }]
   }]
-  ```
+  `
 
 #### 2. `create` (POST)
 * **Petición:** `POST /api/sales` (Enviando JSON con el cliente y los productos en el body)
 * **Parámetro utilizado:** `req.body`
 * **Ejemplo body:**
-  ```json
+  `json
   {
     "customer_name": "Franco",
     "total_price": 15000,
     "products": [{ "id_product": 2, "quantity": 2 }]
   }
-  ```
+  `
 
 ---
 

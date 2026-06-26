@@ -50,10 +50,10 @@ export const updateProduct = async (id, data) => {
     return result.affectedRows > 0;
 };
 
-// Ej: UPDATE products SET active = 0 WHERE id = 5
-export const deactivateProduct = async (id) => {
+// Ej: "DELETE FROM products WHERE id = 5"
+export const deleteProduct = async (id) => {
     const [result] = await connection.query(
-        "UPDATE products SET active = 0 WHERE id = ?",
+        "DELETE FROM products WHERE id = ?",
         [id]
     );
     return result.affectedRows > 0;

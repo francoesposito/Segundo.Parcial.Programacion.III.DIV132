@@ -28,14 +28,14 @@ El proyecto está dividido en dos carpetas principales:
 
 ## 🗺️ Hoja de Ruta Paso a Paso
 
-```mermaid
+`mermaid
 graph TD
     A[Fase 1: Configuración de Base de Datos y Modelos SQL] --> B[Fase 2: API REST y Controladores]
     B --> C[Fase 3: Backoffice Administrativo EJS]
     C --> D[Fase 4: Frontend del Kiosco Autoservicio]
     D --> E[Fase 5: Requerimientos Extra para Final]
     E --> F[Fase 6: Estilos, Pulido y Validación]
-```
+`
 
 ---
 

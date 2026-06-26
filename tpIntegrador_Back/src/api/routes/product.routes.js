@@ -4,7 +4,7 @@ import {
     getProduct, 
     create, 
     update, 
-    deactivate 
+    del
 } from "../controllers/product.controller.js";
 
 //////////////////////////////
@@ -17,6 +17,6 @@ router.get("/", getProducts);       // GET /api/products
 router.get("/:id", getProduct);     // GET /api/products/id
 router.post("/", create);           // POST /api/products
 router.put("/:id", update);         // PUT /api/products/id
-router.delete("/:id", deactivate);  // DELETE /api/products/id
+router.delete("/:id", del);      // DELETE /api/products/id
 
 export default router;
