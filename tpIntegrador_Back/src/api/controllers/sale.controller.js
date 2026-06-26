@@ -1,4 +1,4 @@
-import { createSale, getAllSales } from "../models/sale.model.js";
+﻿import { createSale, getAllSales } from "../models/sale.model.js";
 
 //////////////////////////////
 //       Controllers        //
@@ -51,7 +51,7 @@ export const create = async (req, res) => {
         const saleId = await createSale(customer_name, total_price, products);
 
         res.status(201).json({
-            message: "Venta registrada con éxito",
+            message: "Venta registrada con Ã©xito",
             id: saleId
         });
     } catch (error) {
