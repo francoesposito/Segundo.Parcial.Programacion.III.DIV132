@@ -1,4 +1,4 @@
-import { 
+﻿import { 
     getAllProducts, 
     getProductById, 
     createProduct, 
@@ -55,7 +55,7 @@ export const create = async (req, res) => {
         const newProductId = await createProduct({ name, image, category, price });
 
         res.status(201).json({
-            message: "Producto creado con éxito",
+            message: "Producto creado con Ã©xito",
             id: newProductId
         });
     } catch (error) {

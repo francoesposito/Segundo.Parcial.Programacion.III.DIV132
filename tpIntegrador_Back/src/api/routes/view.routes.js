@@ -1,4 +1,4 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 import { indexView } from "../controllers/view.controller.js";
 import { join, __dirname } from "../../utils/index.js";
 
