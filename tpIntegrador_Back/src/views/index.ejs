@@ -1,25 +1,31 @@
 <%- include("partials/head.ejs") %>
-<%- include("partials/header.ejs") %>
-   
-   <main>
-        <section class="secccion-productos">
-            <h2>Nuestros productos</h2>
-            <div id="contenedor-productos">
-                
-                <div class="card-producto">
-                    <% productsArray.forEach(producto => { %>
-                    <img src="assets/img/pumpernic-cuadrado.png" alt="">
-                    <h4>hamburguesa</h4>
-                    <p>Id: 1</p>
-                    <p>$3000</p>
-                    <% }) %>
-                </div>
-            
-            </div>
-        </section>
-    </main>
+    <%- include("partials/header.ejs") %>
 
-    <!-- <script>
+        <main>
+            <section class="secccion-productos">
+                <h2>Nuestros productos</h2>
+                <div id="contenedor-productos">
+
+                    <div id="contenedor-productos">
+
+                        <% productsArray.forEach(producto=> { %>
+                            <div class="card-producto">
+                                <img src="<%= producto.image %>" alt="<%= producto.name %>">
+                                <h4>
+                                    <%= producto.name %>
+                                </h4>
+                                <p>Id: <%= producto.id %>
+                                </p>
+                                <p>$<%= producto.price %>
+                                </p>
+                            </div>
+                            <% }) %>
+
+                    </div>
+            </section>
+        </main>
+
+        <!-- <script>
         const contenedorProductos = document.getElementById("contenedor-productos");
 
         const url = "http://localhost:3000/api/products/";
@@ -80,5 +86,5 @@
 
 
     </script>  -->
-        
+
 <%- include("partials/footer.ejs") %>

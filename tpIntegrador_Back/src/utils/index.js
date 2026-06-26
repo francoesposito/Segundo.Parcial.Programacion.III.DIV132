@@ -4,7 +4,7 @@ import { dir } from "console";
 
 const filename = fileURLToPath(import.meta.url);
 
-const __dirname = join(dirname(filename), "../../../");
+const __dirname = join(dirname(filename), "../../");
 
 export {
     __dirname,
