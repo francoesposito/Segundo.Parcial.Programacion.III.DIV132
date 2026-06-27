@@ -4,7 +4,7 @@ const postProductForm = document.getElementById("postProduct-form")
 function validarFormulario(data) {
     const errores = [];
 
-    if (!data.name || data.name.trim().lenght < 1) {
+    if (!data.name || data.name.trim().length < 1) {
         errores.push("El nombre debe tener al menos un caracter")
     }
 
@@ -21,7 +21,7 @@ function validarFormulario(data) {
 
 function mostrarMensaje(tipo, mensaje, cantidadErrores){
     contenedorProductos.innerHTML = `
-        <p class="mensaje mensaje-${tipo}">Errores: ${cantidadErrores} Mensaje: ${mensaje}</p>
+        <p class="mensaje mensaje-${tipo}">Errores: ${cantidadErrores || 0} Mensaje: ${mensaje}</p>
     `;
 }
 
@@ -42,11 +42,12 @@ postProductForm.addEventListener("submit", async event => {
     const cantidadErrores = errores.length;
     
     if (errores.length > 0) {
-        mostrarMensaje("error", errores, cantidadErrores)
+        mostrarMensaje("error", errores.join(", "), cantidadErrores)
+        return;
     }
 
     try {
-        const response = await fetch("http://localhost:300/api/products", {
+        const response = await fetch("http://localhost:3000/api/products", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -58,11 +59,11 @@ postProductForm.addEventListener("submit", async event => {
         const result = await response.json();
 
         if (!response.ok) {
-            mostrarMensaje("error", result.message);
+            mostrarMensaje("error", result.message, 1);
             return;
         }
 
-        const infoProducto = `${result.message} con id ${result.productId}`;
+        const infoProducto = `${result.message} con id ${result.id}`;
 
         mostrarMensaje("exito", infoProducto, 0)
 
@@ -71,6 +72,7 @@ postProductForm.addEventListener("submit", async event => {
 
     } catch (error) {
         console.error("Error al enviar los datos: ", error);
+        mostrarMensaje("error", "Error de conexion con el servidor", 1);
     }
 
 

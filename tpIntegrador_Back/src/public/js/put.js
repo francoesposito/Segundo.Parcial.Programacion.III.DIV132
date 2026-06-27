@@ -19,7 +19,7 @@ getProductForm.addEventListener("submit", async event => {
         const datos = await response.json();
 
         if (!response.ok) {
-            mostrarError(data.message);
+            mostrarError(datos.message);
             return;
         }
 
@@ -75,7 +75,7 @@ async function formularioPutProducto(event, producto) {
 
         <label for="categoryProd">Categoria</label>
         <select name="category" id="categoryProd" required>
-            <option value="carreras'">carreras</option>
+            <option value="carreras">carreras</option>
             <option value="disparos">disparos</option>
             <option value="aventuras">aventuras</option>
         </select>
@@ -110,9 +110,15 @@ async function actualizarProducto(event) {
     const formData = new FormData(event.target);
 
     const data = Object.fromEntries(formData.entries());
+    
+    // Convertir precio a número
+    data.price = Number(data.price);
+    // Convertir activo a número
+    data.active = Number(data.active);
 
     try {
-        const response = await fetch("http://localhost:3000/api/products/", {
+        // Corregido: Mandar el ID del producto en la URL del PUT
+        const response = await fetch(`http://localhost:3000/api/products/${data.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -127,10 +133,10 @@ async function actualizarProducto(event) {
             return;
         }
 
-        mostrarError(result.message);
+        mostrarExito(result.message);
 
     } catch (error) {
-        mostrarError(error)
+        mostrarError("Error al conectar con el servidor");
     }
 
 }

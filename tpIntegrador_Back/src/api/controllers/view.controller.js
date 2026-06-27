@@ -1,4 +1,4 @@
-﻿import {
+import {
     getAllProducts,
 } from "../models/product.model.js";
 

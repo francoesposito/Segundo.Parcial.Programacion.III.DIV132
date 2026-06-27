@@ -30,7 +30,7 @@ getProductForm.addEventListener("submit", async event => {
     }
 })
 
-function renderizarProducto() {
+function renderizarProducto(producto) {
     let htmlProducto = `
     <ul>
         <li class="lista-producto">

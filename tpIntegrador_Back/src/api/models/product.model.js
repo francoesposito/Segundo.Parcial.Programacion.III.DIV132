@@ -1,4 +1,4 @@
-﻿import connection from "../database/db.js";
+import connection from "../database/db.js";
 
 //////////////////////////////
 //          Model           //
@@ -50,10 +50,10 @@ export const updateProduct = async (id, data) => {
     return result.affectedRows > 0;
 };
 
-// Ej: "DELETE FROM products WHERE id = 5"
+// Ej: UPDATE products SET active = 0 WHERE id = 5 (Baja Lógica)
 export const deleteProduct = async (id) => {
     const [result] = await connection.query(
-        "DELETE FROM products WHERE id = ?",
+        "UPDATE products SET active = 0 WHERE id = ?",
         [id]
     );
     return result.affectedRows > 0;

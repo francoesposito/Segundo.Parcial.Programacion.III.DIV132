@@ -1,5 +1,6 @@
 const contenedorProductos = document.getElementById("contenedor-productos")
 const getProductFrom = document.getElementById("getProduct-form")
+const urlBase = "http://localhost:3000/api/products";
 
 getProductFrom.addEventListener("submit", async event => {
     event.preventDefault();
@@ -27,7 +28,7 @@ getProductFrom.addEventListener("submit", async event => {
             return
         }
 
-        console.log(data.payload[0]);  // {id: 41, name: 'Fernetazo Chabona', image: 'https://pointlaventanita.com/wp-content/uploads/2024/05/chabona.webp', category: 'drink', price: '2300.00', …}
+        console.log(data.payload[0]);
         const producto = data.payload[0];
 
         const htmlProducto = `

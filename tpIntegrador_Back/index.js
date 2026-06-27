@@ -8,6 +8,7 @@ import cors from "cors";
 import productRouter from "./src/api/routes/product.routes.js";
 import saleRouter from "./src/api/routes/sale.routes.js";
 import viewRouter from "./src/api/routes/view.routes.js"
+import authRouter from "./src/api/routes/auth.routes.js"
 import { __dirname } from "./src/utils/index.js"; 
 import { join } from "path"; 
 import session from "express-session";
@@ -21,6 +22,7 @@ const PORT = environments.port;
 
 app.use(cors());
 app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(join(__dirname, "src/public")));
 
 // Ej: [2026-06-23T18:00:00.000Z] GET /api/products
@@ -44,8 +46,9 @@ app.set("views", join(__dirname, "src/views"))
 //////////////////////////////
 
 app.use("/api/products", productRouter);
-app.use("/api/sales", saleRouter)
-app.use("/dashboard", viewRouter)
+app.use("/api/sales", saleRouter);
+app.use("/dashboard", viewRouter);
+app.use("/", authRouter);
 
 app.get("/", (req, res) => {
     res.send("Servidor Autoservicio corriendo correctamente.");

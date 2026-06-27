@@ -1,4 +1,4 @@
-﻿import { 
+import { 
     getAllProducts, 
     getProductById, 
     createProduct, 
@@ -41,7 +41,7 @@ export const getProduct = async (req, res) => {
             return res.status(404).json({ message: "Producto no encontrado" });
         }
 
-        res.status(200).json({ payload: product });
+        res.status(200).json({ payload: [product] });
     } catch (error) {
         console.error("Error en getProduct controller: ", error.message);
         res.status(500).json({ error: "Error interno del servidor" });
