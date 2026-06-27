@@ -1,4 +1,4 @@
-import {
+﻿import {
     getAllProducts,
 } from "../models/product.model.js";
 
@@ -15,9 +15,9 @@ export const indexView = async (req, res) => {
         })
 
     } catch (error) {
-        console.error("Error obteniendo la información")
+        console.error("Error obteniendo la informaciÃ³n")
         res.status(500).json({
-            message: "Error interno obteniendo la información"
+            message: "Error interno obteniendo la informaciÃ³n"
         })
     }
 

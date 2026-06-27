@@ -1,10 +1,10 @@
-import connection from "../database/db.js";
+﻿import connection from "../database/db.js";
 
 //////////////////////////////
 //          Model           //
 //////////////////////////////
 
-// Ej: Transacción SQL -> Inserta en sales (padre) y luego en sales_products (hijo)
+// Ej: TransacciÃ³n SQL -> Inserta en sales (padre) y luego en sales_products (hijo)
 export const createSale = async (customerName, totalPrice, products) => {
     const conn = await connection.getConnection();
 

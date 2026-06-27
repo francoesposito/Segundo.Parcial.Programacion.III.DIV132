@@ -1,4 +1,4 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 
 import { getSales, create } from "../controllers/sale.controller.js"
 
