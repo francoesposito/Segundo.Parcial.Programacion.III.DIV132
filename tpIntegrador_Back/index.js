@@ -8,7 +8,9 @@ import cors from "cors";
 import productRouter from "./src/api/routes/product.routes.js";
 import saleRouter from "./src/api/routes/sale.routes.js";
 import viewRouter from "./src/api/routes/view.routes.js"
-import { __dirname, join } from "./src/utils/index.js";
+import { __dirname } from "./src/utils/index.js"; 
+import { join } from "path"; 
+import session from "express-session";
 
 const app = express();
 const PORT = environments.port;
@@ -27,8 +29,15 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use(session({
+    secret: "d8c5417b70e0a5e8f47029c0d3a5a1f2e7b99c0b2c1a4e8d", 
+    resave: false, 
+    saveUninitialized: true
+}));
+
 app.set("view engine", "ejs")
 app.set("views", join(__dirname, "src/views"))
+
 
 //////////////////////////////
 //          Routes          //

@@ -54,11 +54,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `category`, `price`, `active`) VALUES
-(1, 'Counter-Strike 2', 'cs2_portada.jpg', 'Shooter Táctico', 0.00, 1),
-(2, 'Resident Evil 4 Remake', 're4_remake_cover.png', 'Survival Horror', 59.99, 1),
-(3, 'Clash Royale', 'cr_icon_mobile.png', 'Estrategia Mobile', 0.00, 1),
-(4, 'Resident Evil 2', 're2_classic.jpg', 'Survival Horror', 39.99, 1),
-(5, 'Counter-Strike 1.6', 'cs16_retro.png', 'Shooter Clásico', 9.99, 1);
+(1, 'Counter-Strike 2', 'cs2_portada.jpg', 'disparos', 0.00, 1),
+(2, 'Resident Evil 4 Remake', 're4_remake_cover.png', 'aventuras', 59.99, 1),
+(3, 'Clash Royale', 'cr_icon_mobile.png', 'carreras', 0.00, 1),
+(4, 'Resident Evil 2', 're2_classic.jpg', 'aventuras', 39.99, 1),
+(5, 'Counter-Strike 1.6', 'cs16_retro.png', 'disparos', 9.99, 1);
 
 -- --------------------------------------------------------
 
