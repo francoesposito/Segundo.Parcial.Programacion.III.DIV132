@@ -7,10 +7,6 @@ import {
     del
 } from "../controllers/product.controller.js";
 
-//////////////////////////////
-//          Routes          //
-//////////////////////////////
-
 const router = Router();
 
 router.get("/", getProducts);       // GET /api/products

@@ -20,17 +20,14 @@ export const indexView = async (req, res) => {
             message: "Error interno obteniendo la informaciÃ³n"
         })
     }
-
 }
 
 export const getProductView = (req, res) => {
-
     res.render("get", {
         title: "Consultar",
         about: "Consultar producto por id: "
     });
 }
-
 
 export const createProductView = (req, res) => {
     res.render("post", {
@@ -39,16 +36,12 @@ export const createProductView = (req, res) => {
     });
 }
 
-
-
 export const updateProductView = (req, res) => {
     res.render("put", {
         title: "Modificar",
         about: "Consultar producto por id: "
     });
 }
-
-
 
 export const deleteProductView = (req, res) => {
     res.render("delete", {

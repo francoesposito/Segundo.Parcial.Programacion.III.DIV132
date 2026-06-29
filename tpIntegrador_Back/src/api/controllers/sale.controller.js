@@ -1,10 +1,5 @@
 ﻿import { createSale, getAllSales } from "../models/sale.model.js";
 
-//////////////////////////////
-//       Controllers        //
-//////////////////////////////
-
-// Ej payload devuelto: [{ id: 1, customer_name: 'Franco', products: [{ name: 'Teclado', quantity: 1 }] }]
 export const getSales = async (req, res) => {
     try {
         const rows = await getAllSales();
@@ -39,7 +34,6 @@ export const getSales = async (req, res) => {
     }
 };
 
-// Ej body: { "customer_name": "Franco", "total_price": 15000, "products": [{"id_product": 2, "quantity": 1}] }
 export const create = async (req, res) => {
     try {
         const { customer_name, total_price, products } = req.body;
@@ -51,7 +45,7 @@ export const create = async (req, res) => {
         const saleId = await createSale(customer_name, total_price, products);
 
         res.status(201).json({
-            message: "Venta registrada con Ã©xito",
+            message: "Venta registrada con exito",
             id: saleId
         });
     } catch (error) {

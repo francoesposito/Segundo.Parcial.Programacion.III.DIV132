@@ -1,12 +1,7 @@
 import connection from "../database/db.js"
 import { getUserByEmail, createUser} from "../models/user.model.js"
 
-//////////////////////////////
-//       Controllers        //
-//////////////////////////////
-
 export const loginView = async (req, res) => {
-    // Corregido: res.rend -> res.render
     res.render("login", {
         title: "Login",
         about: "Introduce tus credenciales"
@@ -25,10 +20,9 @@ export const processLoginInfo = async (req, res) => {
             })
         }
 
-        // Corregido: Agregado await para la consulta asíncrona
         const user = await getUserByEmail(email);
 
-        if (!user || user.password !== password) { // Nota: Comparación en texto plano si no usan bcrypt todavía
+        if (!user || user.password !== password) {
             return res.render("login", {
                 title: "Login",
                 about: "Introduce tus credenciales",

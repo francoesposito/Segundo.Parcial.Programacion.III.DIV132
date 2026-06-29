@@ -1,10 +1,5 @@
 ﻿import connection from "../database/db.js";
 
-//////////////////////////////
-//          Model           //
-//////////////////////////////
-
-// Ej: TransacciÃ³n SQL -> Inserta en sales (padre) y luego en sales_products (hijo)
 export const createSale = async (customerName, totalPrice, products) => {
     const conn = await connection.getConnection();
 
@@ -32,10 +27,6 @@ export const createSale = async (customerName, totalPrice, products) => {
     }
 };
 
-// Ej. devuelve filas combinadas planas:
-// | sale_id | customer_name | product_name | quantity |
-// | 1       | Franco        | Teclado      | 1        |
-// | 1       | Franco        | Mouse        | 2        |
 export const getAllSales = async () => {
     const sql = `
         SELECT 

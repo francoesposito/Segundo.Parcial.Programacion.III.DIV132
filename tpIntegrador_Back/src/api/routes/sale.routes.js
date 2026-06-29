@@ -2,10 +2,6 @@
 
 import { getSales, create } from "../controllers/sale.controller.js"
 
-//////////////////////////////
-//          Routes          //
-//////////////////////////////
-
 const router = Router();
 
 router.get("/", getSales);   // GET /api/sales

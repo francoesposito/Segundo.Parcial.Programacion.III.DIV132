@@ -7,11 +7,6 @@ import {
     countProducts
 } from "../models/product.model.js";
 
-//////////////////////////////
-//       Controllers        //
-//////////////////////////////
-
-// Ej query: ?page=1&limit=4
 export const getProducts = async (req, res) => {
     try {
         const { page, limit } = req.query;
@@ -31,7 +26,6 @@ export const getProducts = async (req, res) => {
     }
 };
 
-// Ej params: /api/products/5
 export const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -48,14 +42,13 @@ export const getProduct = async (req, res) => {
     }
 };
 
-// Ej body: { "name": "Teclado", "price": 4500, "category": "Hardware", "image": "teclado.jpg" }
 export const create = async (req, res) => {
     try {
         const { category, image, name, price } = req.body;
         const newProductId = await createProduct({ name, image, category, price });
 
         res.status(201).json({
-            message: "Producto creado con Ã©xito",
+            message: "Producto creado con exito",
             id: newProductId
         });
     } catch (error) {
@@ -64,7 +57,6 @@ export const create = async (req, res) => {
     }
 };
 
-// Ej params y body: /api/products/5 y { "name": "Teclado RGB", "price": 5000 }
 export const update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -83,7 +75,6 @@ export const update = async (req, res) => {
     }
 };
 
-// Ej params: /api/products/5
 export const del = async (req, res) => {
     try {
         const { id } = req.params;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-06-2026 a las 00:00:56
+-- Tiempo de generación: 29-06-2026 a las 06:31:40
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -56,9 +56,44 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `image`, `category`, `price`, `active`) VALUES
 (1, 'Counter-Strike 2', 'cs2_portada.jpg', 'disparos', 0.00, 1),
 (2, 'Resident Evil 4 Remake', 're4_remake_cover.png', 'aventuras', 59.99, 1),
-(3, 'Clash Royale', 'cr_icon_mobile.png', 'carreras', 0.00, 1),
+(3, 'Mario Kart 8 Deluxe', 'mk8_deluxe.jpg', 'carreras', 59.99, 1),
 (4, 'Resident Evil 2', 're2_classic.jpg', 'aventuras', 39.99, 1),
-(5, 'Counter-Strike 1.6', 'cs16_retro.png', 'disparos', 9.99, 1);
+(5, 'Counter-Strike 1.6', 'cs16_retro.png', 'disparos', 9.99, 1),
+(6, 'Forza Horizon 5', 'forza5.jpg', 'carreras', 59.99, 1),
+(7, 'DOOM Eternal', 'doom_eternal.jpg', 'disparos', 39.99, 1),
+(8, 'The Witcher 3', 'witcher3.jpg', 'aventuras', 29.99, 1),
+(9, 'Need for Speed Heat', 'nfs_heat.jpg', 'carreras', 34.99, 1),
+(10, 'Call of Duty Modern Warfare II', 'cod_mw2.jpg', 'disparos', 69.99, 1),
+(11, 'Red Dead Redemption 2', 'rdr2.jpg', 'aventuras', 49.99, 1),
+(12, 'Gran Turismo 7', 'gt7.jpg', 'carreras', 69.99, 1),
+(13, 'Battlefield 2042', 'bf2042.jpg', 'disparos', 29.99, 1),
+(14, 'Assassin\'s Creed Valhalla', 'ac_valhalla.jpg', 'aventuras', 49.99, 1),
+(15, 'F1 24', 'f1_24.jpg', 'carreras', 69.99, 1),
+(16, 'Rainbow Six Siege', 'r6s.jpg', 'disparos', 19.99, 1),
+(17, 'Horizon Zero Dawn', 'hzd.jpg', 'aventuras', 39.99, 1),
+(18, 'Assetto Corsa Competizione', 'acc.jpg', 'carreras', 39.99, 1),
+(19, 'Valorant', 'valorant.jpg', 'disparos', 0.00, 1),
+(20, 'God of War', 'gow.jpg', 'aventuras', 49.99, 1),
+(21, 'The Crew Motorfest', 'crew_motorfest.jpg', 'carreras', 59.99, 1),
+(22, 'Escape from Tarkov', 'tarkov.jpg', 'disparos', 44.99, 1),
+(23, 'Elden Ring', 'elden_ring.jpg', 'aventuras', 59.99, 1),
+(24, 'Hot Wheels Unleashed 2', 'hw_unleashed2.jpg', 'carreras', 49.99, 1),
+(25, 'Apex Legends', 'apex.jpg', 'disparos', 0.00, 1),
+(26, 'Tomb Raider', 'tomb_raider.jpg', 'aventuras', 19.99, 1),
+(27, 'DIRT Rally 2.0', 'dirt_rally2.jpg', 'carreras', 24.99, 1),
+(28, 'Overwatch 2', 'overwatch2.jpg', 'disparos', 0.00, 1),
+(29, 'Uncharted 4', 'uncharted4.jpg', 'aventuras', 39.99, 1),
+(30, 'Project CARS 3', 'project_cars3.jpg', 'carreras', 29.99, 1),
+(31, 'PUBG Battlegrounds', 'pubg.jpg', 'disparos', 0.00, 1),
+(32, 'Marvel\'s Spider-Man Remastered', 'spiderman.jpg', 'aventuras', 59.99, 1),
+(33, 'WRC Generations', 'wrc_generations.jpg', 'carreras', 39.99, 1),
+(34, 'Far Cry 6', 'farcry6.jpg', 'disparos', 49.99, 1),
+(35, 'Ghost of Tsushima', 'ghost_tsushima.jpg', 'aventuras', 59.99, 1),
+(36, 'Trackmania', 'trackmania.jpg', 'carreras', 0.00, 1),
+(37, 'Halo Infinite', 'halo_infinite.jpg', 'disparos', 59.99, 1),
+(38, 'The Legend of Zelda: Tears of the Kingdom', 'zelda_totk.jpg', 'aventuras', 69.99, 1),
+(39, 'Ride 5', 'ride5.jpg', 'carreras', 59.99, 1),
+(40, 'Destiny 2', 'destiny2.jpg', 'disparos', 0.00, 1);
 
 -- --------------------------------------------------------
 
@@ -114,6 +149,13 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `es_admin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `es_admin`) VALUES
+(1, 'admin', 'admin@gmail.com', 'admin123', 1);
 
 --
 -- Índices para tablas volcadas
@@ -172,7 +214,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `sales`
@@ -190,7 +232,7 @@ ALTER TABLE `surveys`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
