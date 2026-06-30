@@ -35,7 +35,61 @@ async function initCatalog() {
 
 async function initProductDetail() {
     const detailContainer = document.getElementById("product-detail");
-}
+    if (!detailContainer) return;
+
+    const urlParms = new URLSearchParams(window.location.search);
+    const productId = urlParms.get("id")
+
+    if (!productId) {
+        detailContainer.innerHTML = "<p>Error: No se especificó ningún producto"
+        return;
+    }
+
+    detailContainer.container.innerHTML = "<p>Cargando detalles del producto...</p>"
+    const responseData = await getProductById(productId);
+    const product = responseData && responseData.payload ? responseData.payload[0] : null;
+
+    if (!product) {
+        detailContainer.innerHTML = "<p>Error: El producto no existe o no se pudo cargar.</p>";
+        return;
+    }
+
+    detailContainer.innerHTML = `
+        <div class="product-detail-card">
+                <img src="${product.image || 'img/placeholder.png'}" alt="${product.name}" class="detail-img">
+                <div class="detail-info">
+                    <h2>${product.name}</h2>
+                    <p class="category">Categoría: <strong>${product.category}</strong></p>
+                    <p class="price">$${Number(product.price).toFixed(2)}</p>
+                    
+                    <div class="purchase-actions">
+                        <label for="quantity">Cantidad:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="99">
+                        
+                        <button class="btn btn-primary" id="btn-add-to-cart">
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                    
+                    <a href="index.html" class="btn btn-secondary">Volver al Catálogo</a>
+                </div>
+            </div>
+        `
+    
+        const btnAdd = document.getElementById("btn-add-to-cart");
+        btnAdd.addEventListener("click", () => {
+            const qtyInput = document.getElementById("quantity")
+            const quantity = parseInt(qtyInput.value) || 1;
+
+            if (typeof addToCart === "function") {
+                addToCart(product.id, quantity, product.name, product.price)
+                alert(`Agregado: ${quantity} x ${product.name} al carrito`);
+            } else {
+                console.error("La función addToCart no está disponible.")
+            }
+        });
+
+}   
 
 function renderProductCards(products) {
     const container = document.getElementById("products-container");

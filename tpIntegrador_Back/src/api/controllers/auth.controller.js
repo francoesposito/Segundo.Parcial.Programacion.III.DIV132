@@ -22,6 +22,7 @@ export const processLoginInfo = async (req, res) => {
 
         const user = await getUserByEmail(email);
 
+        // ENCRIPTAR CON BYCRIPT LA CONTRASEÑA
         if (!user || user.password !== password) {
             return res.render("login", {
                 title: "Login",

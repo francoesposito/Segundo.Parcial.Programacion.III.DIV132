@@ -17,7 +17,7 @@
  * - checkout(): Capturar método de pago, validar stock y enviar la orden a través de api.js (createSale).
  */
 
-function getCarrito() {
+function getCart() {
     const carrito = localStorage.getItem("carrito");
 
     let carritoParse = [];
@@ -29,12 +29,12 @@ function getCarrito() {
     return carritoParse;
 }
 
-function saveCarrito(carrito) {
+function saveCart(carrito) {
     const carritoJSON = JSON.stringify(carrito);
     localStorage.setItem("carrito", carritoJSON);
 }
 
-function addToCarrito(productId, quantity, name, price) {
+function addToCart(productId, quantity, name, price) {
     let carrito = getCarrito();
 
     const productoExistente = carrito.find(producto => producto.id == productId);
@@ -54,7 +54,7 @@ function addToCarrito(productId, quantity, name, price) {
     carrito.push(nuevoProducto);
 }
 
-function removeFromCarrito(productId) {
+function removeFromCart(productId) {
     let carrito = getCarrito();
 
     const productoExistente = carrito.find(producto => producto.id == productId);
@@ -73,6 +73,6 @@ function removeFromCarrito(productId) {
     saveCarrito(carrito);
 }
 
-function clearCarrito() {
+function clearCart() {
     localStorage.setItem("carrito", []);
 }
