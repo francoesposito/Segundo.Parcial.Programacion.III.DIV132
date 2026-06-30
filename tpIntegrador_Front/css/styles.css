@@ -1,0 +1,38 @@
+/* 
+  ========================================================================
+  HOJA DE ESTILOS PRINCIPAL (styles.css)
+  ========================================================================
+  Propósito:
+  - Definir la identidad visual y los estilos CSS globales de la aplicación.
+  - Implementar el diseño minimalista (inspirado en la estética clásica de Steam).
+  - Gestionar las variables de CSS correspondientes a los temas claro y oscuro.
+  - Diseñar el layout responsivo para el Kiosco Autoservicio.
+*/
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #007bff;
+    --card-bg: #f8f9fa;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+}

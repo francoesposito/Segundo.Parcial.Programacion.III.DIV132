@@ -42,6 +42,10 @@ h2 {
     margin-top: 25px;
 }
 
+hr {
+    border-color: var(--steam-border) var(--steam-border-light) var(--steam-border-light) var(--steam-border)
+}
+
 /* 2. Barra de Navegación (Header) */
 header {
     background-color: var(--steam-dark);
