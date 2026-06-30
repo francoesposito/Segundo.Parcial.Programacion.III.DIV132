@@ -123,22 +123,6 @@ CREATE TABLE `sales_products` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `surveys`
---
-
-CREATE TABLE `surveys` (
-  `id` int(11) NOT NULL,
-  `opinion` text DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `newsletter` tinyint(1) DEFAULT 0,
-  `rating` int(11) DEFAULT NULL,
-  `image_path` varchar(255) DEFAULT NULL,
-  `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -188,12 +172,6 @@ ALTER TABLE `sales_products`
   ADD KEY `id_product` (`id_product`);
 
 --
--- Indices de la tabla `surveys`
---
-ALTER TABLE `surveys`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -220,12 +198,6 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de la tabla `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `surveys`
---
-ALTER TABLE `surveys`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

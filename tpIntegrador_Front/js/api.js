@@ -13,3 +13,76 @@
  * - createSale(saleData): Registrar una nueva venta en el backend (descuenta stock).
  * - sendSurvey(surveyData): Enviar las respuestas de la encuesta de satisfacción al backend.
  */
+
+const URL_BASE = "http://localhost:3000/api"
+
+async function getProducts() {
+    try {
+        const response = await fetch(`${URL_BASE}/products`)
+
+        if (!response.ok) {
+            console.log("Error del servidor: ", response.statusText)
+            return;
+        }
+
+        const resultado = await response.json();
+
+        return resultado.payload
+        
+        
+    } catch (error) {
+        console.error("Error obteniendo productos: ", error)
+        return;
+    }
+}
+
+async function getProductsById(id) {
+    try {
+        const response = await fetch(`${URL_BASE}/products/${id}`);
+
+        if (!response.ok) {
+            console.log("Error del servidor: ", response.statusText)
+        }
+
+        const resultado = await response.json();
+
+        return resultado.payload;
+    } catch (error) {
+        console.error("Error al obtener producto por id: ", error)
+    }
+}
+
+async function createSale(saleData){
+    try {
+        const response = await fetch(`${URL_BASE}/sales`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(saleData)
+        })
+
+        const resultado = await response.json();
+
+        if (!response.ok) {
+            console.error("Error al registrar la venta: ", resultado.error || response.statusText)
+            return;
+        }
+    } catch (error) {
+        console.error("Error de red al registrar la venta: ", error);
+        return;
+    }
+
+}
+
+/*
+
+Requisito de final
+async function sendSurvey(surveyData) {
+    try {
+        const response = await fetch(`${URL_BASE}/`)
+    } catch (error) {
+        
+    }
+}
+*/
