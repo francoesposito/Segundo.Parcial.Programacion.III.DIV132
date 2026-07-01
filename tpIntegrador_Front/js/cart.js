@@ -8,7 +8,7 @@
  * - Procesar la confirmación y el envío del pedido al backend.
  */
 
-// Recuperar el carrito de localStorage
+
 function getCart() {
     const carrito = localStorage.getItem("carrito");
     let carritoParse = [];
@@ -23,13 +23,11 @@ function getCart() {
     return Array.isArray(carritoParse) ? carritoParse : [];
 }
 
-// Guardar el carrito en localStorage
 function saveCart(carrito) {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     updateCartCount();
 }
 
-// Agregar un producto al carrito
 function addToCart(productId, quantity, name, price) {
     let carrito = getCart();
 
@@ -50,13 +48,11 @@ function addToCart(productId, quantity, name, price) {
     saveCart(carrito);
 }
 
-// Función que se llama desde el botón de la tarjeta del catálogo
 function agregarAlCarritoDirecto(productId, name, price) {
     addToCart(productId, 1, name, price);
     alert(`Agregado: 1 x ${name} al carrito`);
 }
 
-// Eliminar o decrementar un producto del carrito
 function removeFromCart(productId) {
     let carrito = getCart();
     const productoExistente = carrito.find(producto => producto.id == productId);
@@ -70,33 +66,28 @@ function removeFromCart(productId) {
         productoExistente.quantity--;
         const name = productoExistente.name;
         
-        // Si la cantidad llega a 0, lo eliminamos de la lista
         carrito = carrito.filter(producto => producto.quantity > 0);
         alert(`Un/una unidad de "${name}" fue eliminada del carrito`);
     }
 
     saveCart(carrito);
-    renderCart(); // Volver a dibujar el carrito si estamos en la vista del carrito
+    renderCart();
 }
 
-// Vaciar por completo el carrito
 function clearCart() {
     saveCart([]);
     renderCart();
 }
 
-// Actualizar el número contador de items en el header
 function updateCartCount() {
     const cartCountEl = document.getElementById("cart-count");
     if (!cartCountEl) return;
 
     const carrito = getCart();
-    // Sumamos la cantidad de todos los items
     const totalItems = carrito.reduce((acc, item) => acc + item.quantity, 0);
     cartCountEl.innerText = `(${totalItems})`;
 }
 
-// Dibujar dinámicamente la tabla del carrito en cart.html
 function renderCart() {
     const container = document.getElementById("cart-container");
     const formContainer = document.getElementById("checkout-form-container");
@@ -159,7 +150,6 @@ function renderCart() {
     container.innerHTML = html;
 }
 
-// Función auxiliar para cambiar la cantidad directamente desde la tabla
 function cambiarCantidad(productId, val) {
     const qty = parseInt(val) || 1;
     let carrito = getCart();
@@ -171,7 +161,6 @@ function cambiarCantidad(productId, val) {
     }
 }
 
-// Confirmar y realizar la compra llamando a la API
 async function checkout() {
     const nameInput = document.getElementById("customer-name");
     const paymentSelect = document.getElementById("payment-method");
@@ -193,7 +182,6 @@ async function checkout() {
 
     const total_price = carrito.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-    // Mapeamos los productos al formato que espera el backend: { id_product, price, quantity }
     const productsMapped = carrito.map(item => ({
         id_product: item.id,
         price: item.price,
@@ -206,13 +194,11 @@ async function checkout() {
         products: productsMapped
     };
 
-    // Llamamos al endpoint de creación de venta en api.js
     const response = await createSale(saleData);
 
     if (response && response.id) {
         alert("¡Compra confirmada con éxito!");
-        
-        // Guardamos los datos de la última compra para que ticket.html los renderice
+
         localStorage.setItem("ultimo_ticket", JSON.stringify({
             sale_id: response.id,
             customer_name,
@@ -221,10 +207,8 @@ async function checkout() {
             date: new Date().toISOString()
         }));
 
-        // Limpiamos el carrito
         localStorage.removeItem("carrito");
         
-        // Redireccionamos al ticket
         window.location.href = "ticket.html";
     } else {
         alert("Hubo un error al procesar la compra. Revisa el stock disponible.");

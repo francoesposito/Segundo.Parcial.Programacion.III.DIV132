@@ -61,4 +61,10 @@ export const requireLogin = (req, res, next) => {
     next();
 }
 
+export const requireAdmin = (req, res, next) => {
+    if (!req.session.user.es_admin) {
+        return res.status(403).render("error", { message: "Acceso denegado" }); 
+    }
+    next();
+};
 

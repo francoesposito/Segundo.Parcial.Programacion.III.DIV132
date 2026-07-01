@@ -34,7 +34,8 @@ export const processLoginInfo = async (req, res) => {
         req.session.user = {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            es_admin: user.es_admin
         }
 
         res.redirect("/dashboard/index")

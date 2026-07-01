@@ -1,18 +1,25 @@
 <%- include("partials/head.ejs") %>
 
-<h2><%= about %></h2>
 
-<form id="loginForm" class="form-alta" action="/login" method="POST">
+<% if (locals.error) { %>
+    <div class="mensaje-error" style="margin-bottom: 15px;"><%= error %></div>
+<% } %>
 
-    <label for="emailUser">Email</label>
-    <input type="email" name="email" id="emailUser" required>
+    <h2>
+        <%= about %>
+    </h2>
 
-    <label for="passwordUser">Password</label>
-    <input type="password" name="password" id="passwordUser" required>
+    <form id="loginForm" class="form-alta" action="/login" method="POST">
 
-    <div>
-        <input type="submit" value="Login">
-    </div>
-</form>
+        <label for="emailUser">Email</label>
+        <input type="email" name="email" id="emailUser" required>
 
-<%- include("partials/footer.ejs") %>
+        <label for="passwordUser">Password</label>
+        <input type="password" name="password" id="passwordUser" required>
+
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+
+    <%- include("partials/footer.ejs") %>
