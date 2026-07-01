@@ -36,12 +36,13 @@ async function getProducts() {
     }
 }
 
-async function getProductsById(id) {
+async function getProductById(id) {
     try {
         const response = await fetch(`${URL_BASE}/products/${id}`);
 
         if (!response.ok) {
             console.log("Error del servidor: ", response.statusText)
+            return null;
         }
 
         const resultado = await response.json();
@@ -49,6 +50,7 @@ async function getProductsById(id) {
         return resultado.payload;
     } catch (error) {
         console.error("Error al obtener producto por id: ", error)
+        return null;
     }
 }
 
@@ -66,13 +68,14 @@ async function createSale(saleData){
 
         if (!response.ok) {
             console.error("Error al registrar la venta: ", resultado.error || response.statusText)
-            return;
+            return null;
         }
+
+        return resultado;
     } catch (error) {
         console.error("Error de red al registrar la venta: ", error);
-        return;
+        return null;
     }
-
 }
 
 /*

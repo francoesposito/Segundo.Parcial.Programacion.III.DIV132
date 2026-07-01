@@ -1,26 +1,68 @@
-<!-- 
-  ========================================================================
-  VISTA DEL CARRITO DE COMPRAS (cart.html)
-  ========================================================================
-  Propósito:
-  - Muestra el listado de productos seleccionados por el cliente.
-  - Permite modificar las cantidades de los productos en el carrito.
-  - Permite eliminar productos del carrito.
-  - Muestra el cálculo del total de la compra.
-  - Ofrece la opción de proceder al pago / confirmar la compra (generar el ticket).
-  - Permite elegir el método de pago antes de confirmar.
+<!DOCTYPE html>
+<html lang="es">
 
-  Elementos Clave del DOM esperados:
-  - Tabla o listado con los productos del carrito (nombre, cantidad, precio unitario, subtotal, botón eliminar).
-  - Indicador del precio total acumulado.
-  - Selector del método de pago (Efectivo, Tarjeta, Débito, etc.).
-  - Botón "Confirmar Compra" (que creará la venta en el backend).
-  - Botón "Vaciar Carrito".
-  - Botón "Seguir Comprando" (vuelve al catálogo).
-  - Botón/Toggle para cambiar el tema visual (claro/oscuro).
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAME INDEX - Carrito</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
 
-  Scripts asociados:
-  - js/theme.js (Control global del tema claro/oscuro)
-  - js/api.js (Llamadas fetch al backend para registrar la venta / descontar stock)
-  - js/cart.js (Lógica de administración del carrito en localStorage, renderizado y confirmación de la venta)
--->
+<body>
+  <header>
+    <div class="header-container">
+      <h1>Carro de Compras</h1>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-theme">Cambiar Tema</button>
+        <a href="index.html" class="btn btn-secondary">← Volver a la Tienda</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="cart-section">
+      <h2>Juegos Seleccionados</h2>
+      <div id="cart-container">
+        <!-- Se rellena dinámicamente desde JS -->
+      </div>
+
+      <div id="checkout-form-container" class="checkout-box" style="display: none;">
+        <h3>Datos de la Compra</h3>
+        <form id="checkout-form" onsubmit="event.preventDefault(); checkout();">
+          <div class="form-group">
+            <label for="customer-name">Nombre del Comprador:</label>
+            <input type="text" id="customer-name" required placeholder="Ingresá tu nombre">
+          </div>
+          <div class="form-group">
+            <label for="payment-method">Método de Pago:</label>
+            <select id="payment-method" required>
+              <option value="">Seleccioná un método</option>
+              <option value="Efectivo">Efectivo</option>
+              <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+              <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+              <option value="Mercado Pago">Mercado Pago</option>
+            </select>
+          </div>
+          <div class="cart-actions">
+            <button type="button" class="btn btn-danger" onclick="clearCart()">Vaciar Carro</button>
+            <button type="submit" class="btn btn-success">Confirmar Compra</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof initTheme === "function") initTheme();
+      if (typeof renderCart === "function") renderCart();
+    });
+  </script>
+</body>
+
+</html>

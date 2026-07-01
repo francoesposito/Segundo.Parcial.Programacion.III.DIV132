@@ -1,22 +1,55 @@
-<!-- 
-  ========================================================================
-  VISTA PRINCIPAL / CATÁLOGO (index.html)
-  ========================================================================
-  Propósito:
-  - Punto de entrada para el cliente en el Kiosco Autoservicio.
-  - Muestra la bienvenida y el catálogo de productos disponibles.
-  - Permite filtrar productos por categorías.
-  - Permite seleccionar un producto para ver su detalle o agregarlo 
-    directamente al carrito.
+<!DOCTYPE html>
+<html lang="es">
 
-  Elementos Clave del DOM esperados:
-  - Selector o botones de categorías para filtrar el catálogo.
-  - Contenedor principal donde se renderizará dinámicamente la lista de productos.
-  - Botón o enlace visible para acceder al Carrito de Compras (cart.html).
-  - Botón/Toggle para cambiar el tema visual (claro/oscuro).
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAME INDEX- Catálogo</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
 
-  Scripts asociados:
-  - js/theme.js (Control global del tema claro/oscuro)
-  - js/api.js (Llamadas fetch al backend)
-  - js/index.js (Lógica de inicialización, filtros y renderizado de la grilla)
--->
+<body>
+  <header>
+    <div class="header-container">
+      <h1>GAME INDEX</h1>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-theme">Cambiar Tema</button>
+        <a href="cart.html" class="btn btn-cart">Ver Carrito <span id="cart-count">(0)</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="filters-section">
+      <h2>Categorías de Juegos</h2>
+      <div class="categories-filters">
+        <button class="btn btn-filter active" data-category="Todos" onclick="filterByCategory('Todos')">Todos</button>
+        <button class="btn btn-filter" data-category="carreras" onclick="filterByCategory('carreras')">Carreras</button>
+        <button class="btn btn-filter" data-category="disparos" onclick="filterByCategory('disparos')">Disparos</button>
+        <button class="btn btn-filter" data-category="aventuras"
+          onclick="filterByCategory('aventuras')">Aventuras</button>
+      </div>
+    </section>
+
+    <section class="catalog-section">
+      <h2>Nuestra Tienda</h2>
+      <div id="products-container" class="products-grid">
+      </div>
+    </section>
+  </main>
+
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/index.js"></script>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof initTheme === "function") initTheme();
+      if (typeof initCatalog === "function") initCatalog();
+      if (typeof updateCartCount === "function") updateCartCount();
+    });
+  </script>
+</body>
+
+</html>

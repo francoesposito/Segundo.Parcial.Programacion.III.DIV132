@@ -25,12 +25,12 @@ async function initCatalog() {
 
     allProducts = await getProducts();
 
-    if (allProducts.lenght === 0) {
+    if (!allProducts || allProducts.length === 0) {
         container.innerHTML = "<p>No hay productos disponibles en este momento.</p>";
         return;
     }
 
-    renderProductCards(products);
+    renderProductCards(allProducts);
 }
 
 async function initProductDetail() {
@@ -41,13 +41,13 @@ async function initProductDetail() {
     const productId = urlParms.get("id")
 
     if (!productId) {
-        detailContainer.innerHTML = "<p>Error: No se especificó ningún producto"
+        detailContainer.innerHTML = "<p>Error: No se especificó ningún producto</p>"
         return;
     }
 
-    detailContainer.container.innerHTML = "<p>Cargando detalles del producto...</p>"
+    detailContainer.innerHTML = "<p>Cargando detalles del producto...</p>"
     const responseData = await getProductById(productId);
-    const product = responseData && responseData.payload ? responseData.payload[0] : null;
+    const product = responseData && responseData.length ? responseData[0] : null;
 
     if (!product) {
         detailContainer.innerHTML = "<p>Error: El producto no existe o no se pudo cargar.</p>";
@@ -74,21 +74,22 @@ async function initProductDetail() {
                     <a href="index.html" class="btn btn-secondary">Volver al Catálogo</a>
                 </div>
             </div>
-        `
+        `;
     
         const btnAdd = document.getElementById("btn-add-to-cart");
-        btnAdd.addEventListener("click", () => {
-            const qtyInput = document.getElementById("quantity")
-            const quantity = parseInt(qtyInput.value) || 1;
+        if (btnAdd) {
+            btnAdd.addEventListener("click", () => {
+                const qtyInput = document.getElementById("quantity")
+                const quantity = parseInt(qtyInput.value) || 1;
 
-            if (typeof addToCart === "function") {
-                addToCart(product.id, quantity, product.name, product.price)
-                alert(`Agregado: ${quantity} x ${product.name} al carrito`);
-            } else {
-                console.error("La función addToCart no está disponible.")
-            }
-        });
-
+                if (typeof addToCart === "function") {
+                    addToCart(product.id, quantity, product.name, product.price)
+                    alert(`Agregado: ${quantity} x ${product.name} al carrito`);
+                } else {
+                    console.error("La función addToCart no está disponible.")
+                }
+            });
+        }
 }   
 
 function renderProductCards(products) {
@@ -96,7 +97,6 @@ function renderProductCards(products) {
     if (!container) return;
 
     container.innerHTML = "";
-
 
     products.forEach(product => {
         let card = `
@@ -116,13 +116,12 @@ function renderProductCards(products) {
         container.innerHTML += card
         
     });
-};
+}
 
 function filterByCategory(category){   
-
     const filteredProducts = (category === "Todos") 
     ? allProducts 
-    : allProducts.filter(product => product.category.toLowerCase() === category.toLowerCase)
+    : allProducts.filter(product => product.category.toLowerCase() === category.toLowerCase());
 
-    renderProductCards(filteredProducts)
+    renderProductCards(filteredProducts);
 }
