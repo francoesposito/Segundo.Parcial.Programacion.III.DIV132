@@ -12,3 +12,15 @@ export const createUser = async (data) => {
     const [result] = await connection.query(sql, [name, email, password, es_admin ? 1 : 0]);
     return result.insertId;
 }
+
+export const deleteUser = async (id) => {
+    const sql = "DELETE FROM users WHERE id = ?";
+    const [result] = await connection.query(sql, [id]);
+    return result.affectedRows > 0;
+}
+
+export const getUserById = async (id) => {
+    const sql = "SELECT * FROM users WHERE id = ?";
+    const [rows] = await connection.query(sql, [id]);
+    return rows[0];
+}

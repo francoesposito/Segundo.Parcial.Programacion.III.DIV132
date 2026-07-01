@@ -17,9 +17,17 @@
         <label for="passwordUser">Password</label>
         <input type="password" name="password" id="passwordUser" required>
 
-        <div>
-            <input type="submit" value="Login">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="submit" value="Login" style="flex: 1;">
+            <button type="button" id="btnAccesoRapido" style="flex: 1; padding: 6px; font-size: 11px;">Acceso Rápido (Tester)</button>
         </div>
     </form>
+
+    <script>
+        document.getElementById('btnAccesoRapido').addEventListener('click', () => {
+            document.getElementById('emailUser').value = 'admin@admin.com';
+            document.getElementById('passwordUser').value = '123456';
+        });
+    </script>
 
     <%- include("partials/footer.ejs") %>

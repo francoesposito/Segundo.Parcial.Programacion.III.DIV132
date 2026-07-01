@@ -1,4 +1,4 @@
-﻿export const loggerURL = (req, res, next) => {
+export const loggerURL = (req, res, next) => {
     let fecha = new Date();
     console.log(`[${fecha.toLocaleDateString()} ${fecha.toLocaleTimeString()}] ${req.method} ${req.url}`);
     
@@ -23,19 +23,20 @@ export const validateId = (req, res, next) => {
 const categoriasValidas = ["aventuras", "disparos", "carreras"];
 export const validateProduct = (req, res, next) => {
 
-    const { name, price, category } = req.body;
+    const { name, category } = req.body;
+    const price = Number(req.body.price);
 
     const errores = [];
 
-    if (!name || !category || !price) {
-        errores.push("Datos invalidos, asegurate de incluir todas las categorias");
+    if (!name || !category || isNaN(price)) {
+        errores.push("Datos invalidos, asegurate de incluir todos los campos");
     }
 
     if (typeof name !== "string" || name.trim().length < 2) {
         errores.push("El nombre debe tener al menos 2 caracteres");
     }
 
-    if (typeof price !== "number" || price <= 0) {
+    if (isNaN(price) || price <= 0) {
         errores.push("El precio debe ser un numero mayor a 0");
     }
 
@@ -63,7 +64,9 @@ export const requireLogin = (req, res, next) => {
 
 export const requireAdmin = (req, res, next) => {
     if (!req.session.user.es_admin) {
-        return res.status(403).render("error", { message: "Acceso denegado" }); 
+        return res.status(403).json({
+            message: "Acceso denegado"
+        }); 
     }
     next();
 };

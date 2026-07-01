@@ -90,3 +90,103 @@ async function eliminarProducto(id) {
         alert("Ocurrio un error al eliminar un producto");
     }
 }
+
+const contenedorUsuarios = document.getElementById("contenedor-usuarios");
+const getUserForm = document.getElementById("getUser-form");
+const urlUserBase = "http://localhost:3000/api/users";
+
+if (getUserForm) {
+    getUserForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const idUser = event.target.idUser.value.trim();
+
+        if (!idUser) {
+            mostrarErrorUsuario("Ingresá un id válido");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${urlUserBase}/${idUser}`);
+            const datos = await response.json();
+
+            if (!response.ok) {
+                mostrarErrorUsuario(datos.message || "Usuario no encontrado");
+                return;
+            }
+
+            const usuario = datos.payload[0];
+            renderizarUsuario(usuario);
+
+        } catch (error) {
+            mostrarErrorUsuario("Error de conexión con el servidor");
+        }
+    });
+}
+
+function renderizarUsuario(usuario) {
+    let htmlUsuario = `
+    <ul>
+        <li class="lista-producto">
+            <p style="margin: 0; font-size: 11px;">
+                <strong>ID:</strong> ${usuario.id} / 
+                <strong>Nombre:</strong> ${usuario.name} / 
+                <strong>Email:</strong> ${usuario.email} / 
+                <strong>Password (hash):</strong> <span style="font-family: monospace; font-size: 9px; word-break: break-all;">${usuario.password}</span> / 
+                <strong>Admin:</strong> ${usuario.es_admin ? "Sí" : "No"}
+            </p>
+            <input type="button" id="deleteUser-button" value="Eliminar Usuario" style="background-color: #5c2c2c !important; border-color: #8c3f3f #3a1a1a #3a1a1a #8c3f3f !important; margin-left: 15px;">
+        </li>
+    </ul>
+    `;
+
+    contenedorUsuarios.innerHTML = htmlUsuario;
+    
+    const deleteUserButton = document.getElementById("deleteUser-button");
+    if (deleteUserButton) {
+        deleteUserButton.addEventListener("click", event => {
+            event.stopPropagation();
+
+            const confirmacion = confirm(`¿Querés eliminar al usuario "${usuario.name}" (ID ${usuario.id})?`);
+
+            if (!confirmacion) {
+                alert("Eliminación cancelada");
+            } else {
+                eliminarUsuario(usuario.id);
+            }
+        });
+    }
+}
+
+function mostrarErrorUsuario(mensaje) {
+    contenedorUsuarios.innerHTML = `
+        <p class="mensaje mensaje-error">${mensaje}</p>
+    `;
+}
+
+function mostrarExitoUsuario(mensaje) {
+    contenedorUsuarios.innerHTML = `
+        <p class="mensaje mensaje-exito">${mensaje}</p>
+    `;
+}
+
+async function eliminarUsuario(id) {
+    try {
+        const response = await fetch(`${urlUserBase}/${id}`, {
+            method: "DELETE"
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+            mostrarErrorUsuario(result.message);
+            return;
+        }
+
+        mostrarExitoUsuario(result.message);
+        
+    } catch (error) {
+        console.error("Error en la solicitud DELETE usuario: ", error);
+        alert("Ocurrió un error al eliminar el usuario");
+    }
+}

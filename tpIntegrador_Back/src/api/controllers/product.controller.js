@@ -45,7 +45,8 @@ export const getProduct = async (req, res) => {
 export const create = async (req, res) => {
     try {
         const { category, image, name, price } = req.body;
-        const newProductId = await createProduct({ name, image, category, price });
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : image;
+        const newProductId = await createProduct({ name, image: imagePath, category, price: Number(price) });
 
         res.status(201).json({
             message: "Producto creado con exito",
@@ -61,8 +62,9 @@ export const update = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, image, price, category } = req.body;
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : image;
 
-        const updated = await updateProduct(id, { name, image, price, category });
+        const updated = await updateProduct(id, { name, image: imagePath, price: Number(price), category });
 
         if (!updated) {
             return res.status(404).json({ message: "Producto no encontrado para actualizar" });

@@ -63,21 +63,23 @@ async function formularioPutProducto(event, producto) {
 
     const htmlForm = `
     <hr>
-    <form id="updateProduct-form" class="form-alta">
+    <form id="updateProduct-form" class="form-alta" enctype="multipart/form-data">
 
         <input type="hidden" name="id" value="${producto.id}">
+        <!-- Guardamos la ruta de la imagen vieja por si no se sube una nueva -->
+        <input type="hidden" name="image" value="${producto.image}">
 
         <label for="nameProd">Nombre</label>
         <input type="text" name="name" id="nameProd" value="${producto.name}" required>
 
-        <label for="imageProd">Imagen</label>
-        <input type="text" name="image" id="imageProd" value="${producto.image}" required>
+        <label for="imageProd">Carátula (Imagen)</label>
+        <input type="file" name="image" id="imageProd" accept="image/*">
 
         <label for="categoryProd">Categoria</label>
         <select name="category" id="categoryProd" required>
-            <option value="carreras">carreras</option>
-            <option value="disparos">disparos</option>
-            <option value="aventuras">aventuras</option>
+            <option value="carreras" ${producto.category === 'carreras' ? 'selected' : ''}>carreras</option>
+            <option value="disparos" ${producto.category === 'disparos' ? 'selected' : ''}>disparos</option>
+            <option value="aventuras" ${producto.category === 'aventuras' ? 'selected' : ''}>aventuras</option>
         </select>
 
         <label for="priceProd">Precio</label>
@@ -85,8 +87,8 @@ async function formularioPutProducto(event, producto) {
 
         <label for="activeProd">Activo</label>
         <select name="active" id="activeProd">
-            <option value="1">activo</option>
-            <option value="0">inactivo</option>
+            <option value="1" ${producto.active == 1 ? 'selected' : ''}>activo</option>
+            <option value="0" ${producto.active == 0 ? 'selected' : ''}>inactivo</option>
         </select>
         
         <div>
@@ -109,21 +111,10 @@ async function actualizarProducto(event) {
 
     const formData = new FormData(event.target);
 
-    const data = Object.fromEntries(formData.entries());
-    
-    // Convertir precio a número
-    data.price = Number(data.price);
-    // Convertir activo a número
-    data.active = Number(data.active);
-
     try {
-        // Corregido: Mandar el ID del producto en la URL del PUT
-        const response = await fetch(`http://localhost:3000/api/products/${data.id}`, {
+        const response = await fetch(`http://localhost:3000/api/products/${formData.get("id")}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            body: formData
         });
 
         const result = await response.json();

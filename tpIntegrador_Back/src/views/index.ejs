@@ -4,24 +4,23 @@
     <main>
             <section class="secccion-productos">
                 <h2>Nuestros productos</h2>
-                <div id="contenedor-productos">
 
-                    <div id="contenedor-productos">
-
-                        <% productsArray.forEach(producto=> { %>
+                <% const categorias = [...new Set(productsArray.map(p => p.category))]; %>
+                <% categorias.forEach(categoria => { %>
+                    <h3 style="color: var(--steam-green); text-transform: uppercase; margin-top: 30px; border-bottom: 1px solid var(--steam-border); padding-bottom: 5px;"><%= categoria %></h3>
+                    
+                    <div style="display: flex !important; flex-wrap: wrap !important; gap: 15px; margin-top: 20px; justify-content: flex-start;">
+                        <% productsArray.filter(p => p.category === categoria).forEach(producto => { %>
                             <div class="card-producto">
                                 <img src="<%= producto.image %>" alt="<%= producto.name %>">
-                                <h4>
-                                    <%= producto.name %>
-                                </h4>
-                                <p>Id: <%= producto.id %>
-                                </p>
-                                <p>$<%= producto.price %>
-                                </p>
+                                <h4><%= producto.name %></h4>
+                                <p>Id: <%= producto.id %></p>
+                                <p>$<%= producto.price %></p>
                             </div>
-                            <% }) %>
-
+                        <% }) %>
                     </div>
+                <% }) %>
+
             </section>
     </main>
 

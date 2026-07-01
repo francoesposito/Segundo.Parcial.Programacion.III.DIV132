@@ -5,6 +5,7 @@ import productRouter from "./src/api/routes/product.routes.js";
 import saleRouter from "./src/api/routes/sale.routes.js";
 import viewRouter from "./src/api/routes/view.routes.js"
 import authRouter from "./src/api/routes/auth.routes.js"
+import userRouter from "./src/api/routes/user.routes.js"
 import { __dirname } from "./src/utils/index.js"; 
 import { join } from "path"; 
 import { loggerURL } from "./src/api/middlewares/middlewares.js";
@@ -34,6 +35,7 @@ app.use("/api/products", productRouter);
 app.use("/api/sales", saleRouter);
 app.use("/dashboard", viewRouter);
 app.use("/", authRouter);
+app.use("/api/users", userRouter);
 
 app.get("/", (req, res) => {
     res.send("Servidor corriendo correctamente.");
