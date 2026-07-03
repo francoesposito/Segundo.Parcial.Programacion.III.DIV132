@@ -56,7 +56,7 @@ async function initProductDetail() {
 
     detailContainer.innerHTML = `
         <div class="product-detail-card">
-                <img src="${product.image || 'img/placeholder.png'}" alt="${product.name}" class="detail-img">
+                <img src="${getImageUrl(product.image)}" alt="${product.name}" class="detail-img">
                 <div class="detail-info">
                     <h2>${product.name}</h2>
                     <p class="category">Categoría: <strong>${product.category}</strong></p>
@@ -92,6 +92,13 @@ async function initProductDetail() {
         }
 }   
 
+function getImageUrl(imagePath) {
+    if (!imagePath) return 'img/placeholder.png';
+    if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith('/uploads/')) return `http://localhost:3000${imagePath}`;
+    return `http://localhost:3000/uploads/${imagePath}`;
+}
+
 function renderProductCards(products) {
     const container = document.getElementById("products-container");
     if (!container) return;
@@ -101,7 +108,7 @@ function renderProductCards(products) {
     products.forEach(product => {
         let card = `
         <div class="card">
-            <img src="${product.image || 'img/placeholder.png'}" alt="${product.name}" class="product-img">
+            <img src="${getImageUrl(product.image)}" alt="${product.name}" class="product-img">
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-category">${product.category}</p>
                 <p class="product-price">$${Number(product.price).toFixed(2)}</p>
