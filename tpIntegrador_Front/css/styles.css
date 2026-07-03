@@ -1,15 +1,11 @@
-/* =======================================================
-   ESTILO RETRO STEAM (MINIMALISTA CLÁSICO 2004) - FRONTEND
-   ======================================================= */
-
 :root {
-    --steam-bg: #3d4a3d;          /* Verde oliva grisáceo de fondo */
-    --steam-dark: #263026;        /* Fondo oscuro para contenedores */
-    --steam-light: #526252;       /* Color de botones e inputs */
-    --steam-border: #1a221a;      /* Bordes oscuros técnicos */
-    --steam-border-light: #617361;/* Bordes claros para efecto relieve */
-    --steam-text: #dcdcdc;        /* Texto gris claro legible */
-    --steam-green: #a3c2a3;       /* Acento verde claro */
+    --steam-bg: #3d4a3d;          
+    --steam-dark: #263026;       
+    --steam-light: #526252;      
+    --steam-border: #1a221a;      
+    --steam-border-light: #617361;
+    --steam-text: #dcdcdc;       
+    --steam-green: #a3c2a3;       
     --msg-error-bg: #4a2626;
     --msg-error-color: #ffcccc;
     --msg-error-border: #6b3535;
@@ -63,6 +59,13 @@ header {
     justify-content: space-between;
     width: 100%;
     align-items: center;
+}
+
+.site-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-right: 10px;
 }
 
 .header-actions {
@@ -317,4 +320,14 @@ select:focus {
     text-align: center;
     font-weight: bold;
     font-size: 12px;
+}
+
+body.dark-theme {
+    --steam-bg: #07120a;          
+    --steam-dark: #08150c;       
+    --steam-light: #183522;       
+    --steam-border: #07120a;      
+    --steam-border-light: #27402f;
+    --steam-text: #dfeee0;      
+    --steam-green: #6aa881;      
 }

@@ -22,9 +22,15 @@ export const processLoginInfo = async (req, res) => {
         }
 
         const user = await getUserByEmail(email);
+        if (!user) {
+            return res.render("login", {
+                title: "Login",
+                about: "Introduce tus credenciales",
+                error: "Usuario no encontrado"
+            });
+        }
 
         const match = await bcrypt.compare(password, user.password);
-        console.log(match);
 
         if (match) {
 

@@ -77,15 +77,3 @@ async function createSale(saleData){
         return null;
     }
 }
-
-/*
-
-Requisito de final
-async function sendSurvey(surveyData) {
-    try {
-        const response = await fetch(`${URL_BASE}/`)
-    } catch (error) {
-        
-    }
-}
-*/

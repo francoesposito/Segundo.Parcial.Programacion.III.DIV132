@@ -4,6 +4,7 @@ import fs from "fs";
 import { __dirname } from "../../utils/index.js";
 
 const uploadDir = path.join(__dirname, "src/public/uploads");
+
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }

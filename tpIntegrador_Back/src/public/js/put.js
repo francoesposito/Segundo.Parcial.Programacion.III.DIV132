@@ -33,9 +33,11 @@ getProductForm.addEventListener("submit", async event => {
 })
 
 function renderizarProducto(producto) {
+    const imageUrl = producto.image && producto.image.startsWith('/') ? producto.image : `/uploads/${producto.image}`;
+
     let htmlProducto = `<ul>
         <li class="lista-producto">
-            <img src="${producto.image}" alt="${producto.name}">
+            <img src="${imageUrl}" alt="${producto.name}">
             <p>Id: ${producto.id} / Nombre: ${producto.name} / <strong>Precio: $${producto.price}</strong></p>
             <input type="button" id="updateProduct-button" value="Actualizar Producto">
         </li>

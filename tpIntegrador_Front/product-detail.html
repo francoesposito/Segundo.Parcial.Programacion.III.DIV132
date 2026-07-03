@@ -1,22 +1,44 @@
-<!-- 
-  ========================================================================
-  VISTA DE DETALLE DE PRODUCTO (product-detail.html)
-  ========================================================================
-  Propósito:
-  - Muestra la información detallada de un producto seleccionado (imagen, 
-    nombre, descripción, precio, categoría, stock disponible).
-  - Permite al usuario especificar la cantidad que desea y agregar el 
-    producto al carrito de compras.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Producto</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div style="display:flex;align-items:center;">
+        <img src="http://localhost:3000/assets/img/favicon.png" alt="logo" class="site-logo">
+        <h1>Detalle del Producto</h1>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-theme">Cambiar Tema</button>
+        <a href="index.html" class="btn btn-secondary">Volver</a>
+        <a href="cart.html" class="btn">Carrito <span id="cart-count">(0)</span></a>
+      </div>
+    </div>
+  </header>
 
-  Elementos Clave del DOM esperados:
-  - Contenedor para la información detallada del producto.
-  - Input numérico para seleccionar la cantidad.
-  - Botón "Agregar al Carrito".
-  - Botón "Volver al Catálogo".
-  - Botón/Toggle para cambiar el tema visual (claro/oscuro).
+  <main>
+    <section id="product-detail" style="padding: 20px;">
+      <!-- El contenido del detalle se renderiza desde js/index.js initProductDetail() -->
+    </section>
+  </main>
 
-  Scripts asociados:
-  - js/theme.js (Control global del tema claro/oscuro)
-  - js/api.js (Llamadas fetch al backend para obtener los datos del producto por ID)
-  - js/index.js (Lógica para capturar el ID de la URL y renderizar el detalle del producto)
--->
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/index.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof initTheme === 'function') initTheme();
+      if (typeof updateCartCount === 'function') updateCartCount();
+      if (typeof initProductDetail === 'function') initProductDetail();
+    });
+  </script>
+</body>
+</html>
+

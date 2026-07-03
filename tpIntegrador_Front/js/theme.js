@@ -1,14 +1,27 @@
-/**
- * ========================================================================
- * CONTROLADOR DE TEMA CLARO / OSCURO (theme.js)
- * ========================================================================
- * Propósito:
- * - Proveer soporte de cambio de tema (claro/oscuro) de forma global en la aplicación.
- * - Mantener la preferencia del usuario persistida en localStorage.
- * 
- * Funciones y lógica esperadas:
- * - initTheme(): Verificar si hay una preferencia guardada en localStorage o sistema operativo,
- *   y aplicar la clase correspondiente (ej. 'dark-theme' o 'light-theme') al elemento HTML/body al cargar la página.
- * - toggleTheme(): Alternar la preferencia de tema y guardarla en localStorage.
- * - Configurar un escuchador de eventos para el botón de cambio de tema presente en el header de las páginas.
- */
+const THEME_KEY = "game_index_theme"; // es la clave del localStorage
+
+function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    const isDark = saved === 'dark';
+    setTheme(isDark);
+
+    const btn = document.getElementById('theme-toggle');
+    btn.addEventListener('click', toggleTheme);
+}
+
+function toggleTheme() {
+    const isNowDark = !document.body.classList.contains('dark-theme');
+    setTheme(isNowDark);
+}
+
+function updateButtonText(isDark) {
+    const btn = document.getElementById('theme-toggle');
+
+    btn.textContent = isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro';
+}
+
+function setTheme(isDark) {
+    document.body.classList.toggle('dark-theme', isDark);
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+    updateButtonText(isDark);
+}

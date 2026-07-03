@@ -1,23 +1,43 @@
-<!-- 
-  ========================================================================
-  VISTA DEL TICKET DE COMPRA (ticket.html)
-  ========================================================================
-  Propósito:
-  - Muestra el comprobante final de la venta recién realizada.
-  - Presenta la información de los productos adquiridos, el total pagado y el ID de la transacción.
-  - Ofrece al cliente la opción de imprimir el ticket o descargar un PDF.
-  - Redirige al cliente hacia la encuesta de satisfacción.
+<link rel="stylesheet" href="css/styles.css">
+</head>
 
-  Elementos Clave del DOM esperados:
-  - Número de ticket / ID de la venta.
-  - Fecha y hora de la transacción.
-  - Detalle de ítems facturados y el total cobrado.
-  - Botón "Imprimir Ticket / Guardar PDF".
-  - Botón "Finalizar y responder encuesta" (redirige a survey.html).
-  - Botón/Toggle para cambiar el tema visual (claro/oscuro).
+<body>
+  <header>
+    <div class="header-container">
+      <div style="display:flex;align-items:center;">
+        <img src="http://localhost:3000/assets/img/favicon.png" alt="logo" class="site-logo">
+        <h1>Ticket de Compra</h1>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn btn-theme">Cambiar Tema</button>
+      </div>
+    </div>
+  </header>
 
-  Scripts asociados:
-  - js/theme.js (Control global del tema claro/oscuro)
-  - js/api.js (En caso de requerir re-consultar el ticket al backend)
-  - js/ticket.js (Lógica de lectura de datos de la compra del localStorage/URL y generación de la impresión)
--->
+  <main>
+    <section class="ticket-section">
+      <div id="ticket-container">
+      </div>
+
+      <div style="margin-top:20px; display:flex; gap:10px;">
+        <button id="boton_imprimir" class="btn btn-success">Imprimir / Descargar PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ticket.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof initTheme === 'function') initTheme();
+      if (typeof initTicket === 'function') initTicket();
+    });
+  </script>
+</body>
+
+</html>
+

@@ -31,10 +31,12 @@ getProductFrom.addEventListener("submit", async event => {
         console.log(data.payload[0]);
         const producto = data.payload[0];
 
+        const imageUrl = producto.image && producto.image.startsWith('/') ? producto.image : `/uploads/${producto.image}`;
+
         const htmlProducto = `
             <ul>
                 <li class="lista-producto">
-                    <img src="${producto.image}" alt="${producto.name}">
+                    <img src="${imageUrl}" alt="${producto.name}">
                     <p>Id: ${producto.id} / Nombre: ${producto.name} / <strong>Precio: $${producto.price}</strong></p>
                 </li>
             </ul>

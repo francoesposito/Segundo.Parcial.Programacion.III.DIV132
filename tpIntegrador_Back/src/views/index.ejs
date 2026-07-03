@@ -12,7 +12,7 @@
                     <div style="display: flex !important; flex-wrap: wrap !important; gap: 15px; margin-top: 20px; justify-content: flex-start;">
                         <% productsArray.filter(p => p.category === categoria).forEach(producto => { %>
                             <div class="card-producto">
-                                <img src="<%= producto.image %>" alt="<%= producto.name %>">
+                                <img src="<%= producto.image && producto.image.startsWith('/') ? producto.image : '/uploads/' + producto.image %>" alt="<%= producto.name %>">
                                 <h4><%= producto.name %></h4>
                                 <p>Id: <%= producto.id %></p>
                                 <p>$<%= producto.price %></p>

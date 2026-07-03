@@ -139,7 +139,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `es_admin`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin123', 1);
+(1, 'admin', 'admin@gmail.com', '$2b$10$WbmJTezu4//tVxPknVh/X.AyYBFsqVBhB4J6LhewDrcdLL6OuuTZy', 1);
 
 --
 -- Índices para tablas volcadas
